@@ -107,17 +107,6 @@ yarn dev
 └── utils/           # Utility functions and helpers
 ```
 
-## Dependencies
-
-The project uses several key dependencies:
-- expo: ^53.0.0
-- react-native: 0.79.1
-- expo-router: ~5.0.2
-- react-native-reanimated: ~3.17.4
-- expo-camera: ~16.1.5
-- expo-av: ~13.10.5
-- And many more (see package.json for full list)
-
 ## Contributing
 
 1. Fork the repository
