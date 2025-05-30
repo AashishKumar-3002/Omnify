@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Pressable, SafeAreaView } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Video, AVPlaybackStatus, ResizeMode } from 'expo-av';
@@ -12,15 +12,13 @@ import {
   SkipForward,
   X
 } from 'lucide-react-native';
+import { GlobalStyles, ComponentStyles } from '@/styles';
 import { Colors } from '@/constants/colors';
-import { Typography } from '@/constants/typography';
-import { Spacing } from '@/constants/spacing';
-import { Layout } from '@/constants/layout';
 
 export default function PlayerScreen() {
   const params = useLocalSearchParams<{ videoUrl: string; title: string }>();
   const router = useRouter();
-  const videoRef = React.useRef<Video>(null);
+  const videoRef = useRef<Video>(null);
   
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
   const [controlsVisible, setControlsVisible] = useState(true);
@@ -34,7 +32,7 @@ export default function PlayerScreen() {
   
   // Hide controls after a period of inactivity
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     
     if (controlsVisible) {
       timeout = setTimeout(() => {
@@ -94,16 +92,16 @@ export default function PlayerScreen() {
   };
   
   return (
-    <View style={styles.container}>
+    <View style={GlobalStyles.videoPlayerContainer}>
       <StatusBar hidden />
       
       <Pressable
-        style={styles.videoContainer}
+        style={ComponentStyles.videoContainer}
         onPress={() => setControlsVisible(!controlsVisible)}
       >
         <Video
           ref={videoRef}
-          style={styles.video}
+          style={ComponentStyles.video}
           source={{ uri: params.videoUrl || 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
           useNativeControls={false}
           resizeMode={ResizeMode.CONTAIN}
@@ -113,23 +111,23 @@ export default function PlayerScreen() {
       </Pressable>
       
       {controlsVisible && (
-        <SafeAreaView style={styles.controlsOverlay}>
-          <View style={styles.topControls}>
-            <Pressable onPress={() => router.back()} style={styles.backButton}>
+        <SafeAreaView style={ComponentStyles.controlsOverlay}>
+          <View style={ComponentStyles.topControls}>
+            <Pressable onPress={() => router.back()} style={ComponentStyles.backButton}>
               <X color={Colors.text.primary} size={24} />
             </Pressable>
-            <Text style={styles.title} numberOfLines={1}>
+            <Text style={ComponentStyles.playerTitle} numberOfLines={1}>
               {params.title || 'Video Player'}
             </Text>
-            <View style={styles.rightControls}>
-              <Pressable style={styles.controlButton} onPress={toggleSubtitles}>
+            <View style={ComponentStyles.rightControls}>
+              <Pressable style={ComponentStyles.controlButton} onPress={toggleSubtitles}>
                 <Subtitles 
                   color={showSubtitles ? Colors.primary : Colors.text.primary} 
                   size={24} 
                   fill={showSubtitles ? Colors.primary : undefined}
                 />
               </Pressable>
-              <Pressable style={styles.controlButton} onPress={toggleQualityOptions}>
+              <Pressable style={ComponentStyles.controlButton} onPress={toggleQualityOptions}>
                 <Settings 
                   color={showQualityOptions ? Colors.primary : Colors.text.primary} 
                   size={24} 
@@ -138,33 +136,33 @@ export default function PlayerScreen() {
             </View>
           </View>
           
-          <View style={styles.centerControls}>
-            <Pressable style={styles.seekButton} onPress={() => seek(-10000)}>
+          <View style={ComponentStyles.centerControls}>
+            <Pressable style={ComponentStyles.seekButton} onPress={() => seek(-10000)}>
               <SkipBack color={Colors.text.primary} size={32} />
             </Pressable>
-            <Pressable style={styles.playPauseButton} onPress={togglePlayPause}>
+            <Pressable style={ComponentStyles.playPauseButton} onPress={togglePlayPause}>
               {isPlaying ? (
                 <Pause color={Colors.background.dark} size={28} />
               ) : (
                 <Play color={Colors.background.dark} size={28} />
               )}
             </Pressable>
-            <Pressable style={styles.seekButton} onPress={() => seek(10000)}>
+            <Pressable style={ComponentStyles.seekButton} onPress={() => seek(10000)}>
               <SkipForward color={Colors.text.primary} size={32} />
             </Pressable>
           </View>
           
-          <View style={styles.bottomControls}>
-            <View style={styles.progressContainer}>
-              <View style={styles.progressBackground}>
-                <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
+          <View style={ComponentStyles.bottomControls}>
+            <View style={ComponentStyles.progressContainer}>
+              <View style={ComponentStyles.progressBackground}>
+                <View style={[ComponentStyles.progressFill, { width: `${progress * 100}%` }]} />
               </View>
-              <View style={styles.timeContainer}>
-                <Text style={styles.timeText}>
+              <View style={ComponentStyles.timeContainer}>
+                <Text style={ComponentStyles.timeText}>
                   {formatTime(position)}
                 </Text>
-                <Text style={styles.timeText}>
-                  {formatTime(duration)}
+                <Text style={ComponentStyles.timeText}>
+                  {formatTime(duration || 0)}
                 </Text>
               </View>
             </View>
@@ -173,37 +171,37 @@ export default function PlayerScreen() {
       )}
       
       {showSubtitles && controlsVisible && (
-        <View style={styles.optionsPanel}>
-          <Text style={styles.optionsPanelTitle}>Subtitles</Text>
-          <Pressable style={styles.optionItem}>
-            <Text style={[styles.optionText, styles.optionTextActive]}>English</Text>
+        <View style={ComponentStyles.optionsPanel}>
+          <Text style={ComponentStyles.optionsPanelTitle}>Subtitles</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={[ComponentStyles.optionText, ComponentStyles.optionTextActive]}>English</Text>
           </Pressable>
-          <Pressable style={styles.optionItem}>
-            <Text style={styles.optionText}>Spanish</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={ComponentStyles.optionText}>Spanish</Text>
           </Pressable>
-          <Pressable style={styles.optionItem}>
-            <Text style={styles.optionText}>French</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={ComponentStyles.optionText}>French</Text>
           </Pressable>
-          <Pressable style={styles.optionItem}>
-            <Text style={styles.optionText}>Off</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={ComponentStyles.optionText}>Off</Text>
           </Pressable>
         </View>
       )}
       
       {showQualityOptions && controlsVisible && (
-        <View style={styles.optionsPanel}>
-          <Text style={styles.optionsPanelTitle}>Quality</Text>
-          <Pressable style={styles.optionItem}>
-            <Text style={[styles.optionText, styles.optionTextActive]}>Auto</Text>
+        <View style={ComponentStyles.optionsPanel}>
+          <Text style={ComponentStyles.optionsPanelTitle}>Quality</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={[ComponentStyles.optionText, ComponentStyles.optionTextActive]}>Auto</Text>
           </Pressable>
-          <Pressable style={styles.optionItem}>
-            <Text style={styles.optionText}>1080p</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={ComponentStyles.optionText}>1080p</Text>
           </Pressable>
-          <Pressable style={styles.optionItem}>
-            <Text style={styles.optionText}>720p</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={ComponentStyles.optionText}>720p</Text>
           </Pressable>
-          <Pressable style={styles.optionItem}>
-            <Text style={styles.optionText}>480p</Text>
+          <Pressable style={ComponentStyles.optionItem}>
+            <Text style={ComponentStyles.optionText}>480p</Text>
           </Pressable>
         </View>
       )}
@@ -211,116 +209,4 @@ export default function PlayerScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  videoContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  video: {
-    width: '100%',
-    height: '100%',
-  },
-  controlsOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'space-between',
-  },
-  topControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Spacing.md,
-  },
-  backButton: {
-    padding: Spacing.xs,
-  },
-  title: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.medium,
-    flex: 1,
-    marginLeft: Spacing.md,
-    marginRight: Spacing.sm,
-  },
-  rightControls: {
-    flexDirection: 'row',
-  },
-  controlButton: {
-    padding: Spacing.xs,
-    marginLeft: Spacing.sm,
-  },
-  centerControls: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  playPauseButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: Spacing.xl,
-  },
-  seekButton: {
-    padding: Spacing.md,
-  },
-  bottomControls: {
-    padding: Spacing.md,
-  },
-  progressContainer: {
-    width: '100%',
-  },
-  progressBackground: {
-    height: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: Colors.primary,
-    borderRadius: 2,
-  },
-  timeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: Spacing.xs,
-  },
-  timeText: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  optionsPanel: {
-    position: 'absolute',
-    right: 0,
-    top: 70,
-    backgroundColor: Colors.background.medium,
-    borderRadius: Layout.radius.md,
-    padding: Spacing.md,
-    margin: Spacing.md,
-    width: 160,
-  },
-  optionsPanelTitle: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginBottom: Spacing.sm,
-  },
-  optionItem: {
-    paddingVertical: Spacing.sm,
-  },
-  optionText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-  },
-  optionTextActive: {
-    color: Colors.primary,
-    fontFamily: Typography.fontFamily.medium,
-  },
-});
+// Remove the entire StyleSheet.create() block as we're now using global styles

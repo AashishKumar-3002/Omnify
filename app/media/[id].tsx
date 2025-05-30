@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Pressable, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Play, Bookmark, BookmarkCheck, Star } from 'lucide-react-native';
+import { GlobalStyles, TextStyles, ComponentStyles, LayoutStyles } from '@/styles';
 import { Colors } from '@/constants/colors';
-import { Typography } from '@/constants/typography';
-import { Spacing } from '@/constants/spacing';
-import { Layout } from '@/constants/layout';
 import { api } from '@/utils/api';
 import { Media, Movie, Series, Anime, Episode } from '@/types/media';
 import BackButton from '@/components/ui/BackButton';
@@ -109,13 +107,13 @@ export default function MediaDetailScreen() {
     if (!seriesOrAnime.episodes || seriesOrAnime.episodes.length === 0) return null;
     
     return (
-      <View style={styles.episodesContainer}>
-        <Text style={styles.sectionTitle}>Episodes</Text>
+      <View style={ComponentStyles.episodesContainer}>
+        <Text style={TextStyles.sectionTitle}>Episodes</Text>
         
         {seriesOrAnime.episodes.map((episode: Episode) => (
           <Pressable
             key={episode.id}
-            style={styles.episodeItem}
+            style={ComponentStyles.episodeItem}
             onPress={() => {
               router.push({
                 pathname: '/media/player',
@@ -137,16 +135,16 @@ export default function MediaDetailScreen() {
           >
             <Image 
               source={{ uri: episode.thumbnailUrl }}
-              style={styles.episodeThumbnail}
+              style={ComponentStyles.episodeThumbnail}
             />
-            <View style={styles.episodeInfo}>
-              <Text style={styles.episodeNumber}>
+            <View style={ComponentStyles.episodeInfo}>
+              <Text style={TextStyles.episodeNumber}>
                 S{episode.season} E{episode.number}
               </Text>
-              <Text style={styles.episodeTitle}>{episode.title}</Text>
-              <Text style={styles.episodeDuration}>{episode.duration}</Text>
+              <Text style={TextStyles.episodeTitle}>{episode.title}</Text>
+              <Text style={TextStyles.episodeDuration}>{episode.duration}</Text>
             </View>
-            <View style={styles.episodePlay}>
+            <View style={ComponentStyles.episodePlay}>
               <Play size={20} color={Colors.primary} />
             </View>
           </Pressable>
@@ -157,59 +155,59 @@ export default function MediaDetailScreen() {
   
   if (loading || !media) {
     return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
+      <SafeAreaView style={GlobalStyles.loadingContainer}>
+        <Text style={GlobalStyles.loadingText}>Loading...</Text>
       </SafeAreaView>
     );
   }
   
   return (
-    <View style={styles.container}>
+    <View style={GlobalStyles.container}>
       <StatusBar style="light" />
       
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.heroContainer}>
+        <View style={LayoutStyles.heroContainer}>
           <Image
             source={{ uri: media.coverImage }}
-            style={styles.heroImage}
+            style={LayoutStyles.heroImage}
             resizeMode="cover"
           />
           <LinearGradient
-            colors={Colors.gradients.dark}
-            style={styles.overlay}
+            colors={Colors.gradients.dark as any}
+            style={GlobalStyles.gradientOverlay}
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}
           />
-          <SafeAreaView style={styles.topBar}>
+          <SafeAreaView style={LayoutStyles.topBar}>
             <BackButton />
           </SafeAreaView>
         </View>
         
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>{media.title}</Text>
+        <View style={ComponentStyles.contentContainer}>
+          <Text style={TextStyles.title}>{media.title}</Text>
           
-          <View style={styles.metaContainer}>
+          <View style={ComponentStyles.metaContainer}>
             {media.releaseYear && (
-              <Text style={styles.metaText}>{media.releaseYear}</Text>
+              <Text style={TextStyles.metaText}>{media.releaseYear}</Text>
             )}
             {media.rating && (
-              <View style={styles.ratingContainer}>
+              <View style={ComponentStyles.ratingContainer}>
                 <Star size={14} color={Colors.primary} fill={Colors.primary} />
-                <Text style={styles.ratingText}>{media.rating.toFixed(1)}</Text>
+                <Text style={ComponentStyles.ratingText}>{media.rating.toFixed(1)}</Text>
               </View>
             )}
-            <Text style={styles.metaText}>{media.type.charAt(0).toUpperCase() + media.type.slice(1)}</Text>
+            <Text style={TextStyles.metaText}>{media.type.charAt(0).toUpperCase() + media.type.slice(1)}</Text>
           </View>
           
-          <View style={styles.actionContainer}>
-            <Pressable style={styles.playButton} onPress={handlePlayPress}>
+          <View style={ComponentStyles.actionContainer}>
+            <Pressable style={ComponentStyles.playButton} onPress={handlePlayPress}>
               <Play size={20} color={Colors.background.dark} />
-              <Text style={styles.playButtonText}>
+              <Text style={ComponentStyles.playButtonText}>
                 {media.type === 'movie' ? 'Play Movie' : 'Play Episode 1'}
               </Text>
             </Pressable>
             
-            <Pressable style={styles.bookmarkButton} onPress={toggleBookmark}>
+            <Pressable style={ComponentStyles.bookmarkButton} onPress={toggleBookmark}>
               {isBookmarked ? (
                 <BookmarkCheck size={20} color={Colors.primary} fill={Colors.primary} />
               ) : (
@@ -218,9 +216,9 @@ export default function MediaDetailScreen() {
             </Pressable>
           </View>
           
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionTitle}>Synopsis</Text>
-            <Text style={styles.description}>{media.description}</Text>
+          <View style={ComponentStyles.descriptionContainer}>
+            <Text style={ComponentStyles.descriptionTitle}>Synopsis</Text>
+            <Text style={TextStyles.description}>{media.description}</Text>
           </View>
           
           {renderEpisodes()}
@@ -230,163 +228,4 @@ export default function MediaDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background.dark,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.background.dark,
-  },
-  loadingText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.lg,
-  },
-  heroContainer: {
-    height: 250,
-    position: 'relative',
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    height: 80,
-    top: 'auto',
-  },
-  topBar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: Spacing.md,
-  },
-  contentContainer: {
-    padding: Spacing.md,
-  },
-  title: {
-    fontSize: Typography.fontSize['2xl'],
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginTop: Spacing.md,
-  },
-  metaContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Spacing.sm,
-  },
-  metaText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.secondary,
-    marginRight: Spacing.md,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: Spacing.md,
-  },
-  ratingText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary,
-    marginLeft: Spacing.xs / 2,
-  },
-  actionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Spacing.lg,
-  },
-  playButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Layout.radius.full,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  playButtonText: {
-    color: Colors.background.dark,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginLeft: Spacing.xs,
-  },
-  bookmarkButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: Spacing.md,
-  },
-  descriptionContainer: {
-    marginTop: Spacing.xl,
-  },
-  descriptionTitle: {
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginBottom: Spacing.sm,
-  },
-  description: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.secondary,
-    lineHeight: Typography.lineHeight.lg,
-  },
-  episodesContainer: {
-    marginTop: Spacing.xl,
-  },
-  sectionTitle: {
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginBottom: Spacing.md,
-  },
-  episodeItem: {
-    flexDirection: 'row',
-    marginBottom: Spacing.md,
-    backgroundColor: Colors.background.light,
-    borderRadius: Layout.radius.md,
-    overflow: 'hidden',
-  },
-  episodeThumbnail: {
-    width: 120,
-    height: 68,
-  },
-  episodeInfo: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: Spacing.sm,
-  },
-  episodeNumber: {
-    color: Colors.primary,
-    fontSize: Typography.fontSize.xs,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  episodeTitle: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-    marginTop: Spacing.xs / 2,
-  },
-  episodeDuration: {
-    color: Colors.text.tertiary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.regular,
-    marginTop: Spacing.xs,
-  },
-  episodePlay: {
-    justifyContent: 'center',
-    padding: Spacing.md,
-  },
-});
+// Remove the entire StyleSheet.create() block as we're now using global styles

@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Layout } from '../../constants/layout';
-import { Colors } from '../../constants/colors';
-import { Typography } from '../../constants/typography';
-import { Spacing } from '../../constants/spacing';
+import { ComponentStyles, TextStyles, LayoutStyles } from '../../styles';
 import { Media } from '../../types/media';
 
 interface MediaCardProps {
@@ -54,24 +51,24 @@ const MediaCard: React.FC<MediaCardProps> = ({
   const dimensions = getCardDimensions();
 
   return (
-    <Pressable onPress={handlePress} style={[styles.container, { width: dimensions.width }]}>
-      <View style={[styles.imageContainer, { height: dimensions.height }]}>
+    <Pressable onPress={handlePress} style={[ComponentStyles.mediaCard, { width: dimensions.width }]}>
+      <View style={[LayoutStyles.imageContainer, { height: dimensions.height }]}>
         <Image
           source={{ uri: item.coverImage }}
-          style={styles.image}
+          style={LayoutStyles.image}
           resizeMode="cover"
         />
         
         {showProgress && progress > 0 && (
-          <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { width: `${progress}%` }]} />
+          <View style={ComponentStyles.mediaCardProgress}>
+            <View style={[LayoutStyles.progressBar, { width: `${progress}%` }]} />
           </View>
         )}
       </View>
       
       {showTitle && (
         <Text
-          style={styles.title}
+          style={TextStyles.cardTitle}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
@@ -81,39 +78,5 @@ const MediaCard: React.FC<MediaCardProps> = ({
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginRight: Spacing.md,
-    marginBottom: Spacing.md,
-  },
-  imageContainer: {
-    borderRadius: Layout.radius.md,
-    overflow: 'hidden',
-    backgroundColor: Colors.background.light,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  title: {
-    marginTop: Spacing.xs,
-    color: Colors.text.primary,
-    fontFamily: Typography.fontFamily.medium,
-    fontSize: Typography.fontSize.sm,
-  },
-  progressContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 3,
-    backgroundColor: Colors.background.light,
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: Colors.primary,
-  },
-});
 
 export default MediaCard;

@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
+import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { GlobalStyles } from '@/styles';
 import { Colors } from '@/constants/colors';
 
 export default function RootLayout() {
   useFrameworkReady();
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={GlobalStyles.container}>
       <StatusBar style="light" />
       <Stack 
         screenOptions={{ 
@@ -27,10 +27,3 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background.dark,
-  },
-});

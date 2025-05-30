@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Colors } from '@/constants/colors';
-import { Typography } from '@/constants/typography';
-import { Spacing } from '@/constants/spacing';
+import { GlobalStyles, TextStyles, LayoutStyles } from '@/styles';
 import { HistoryItem, BookmarkItem } from '@/types/media';
 import { api } from '@/utils/api';
-import BackButton from '@/components/ui/BackButton';
 import CategoryTabs from '@/components/ui/CategoryTabs';
 import MediaCard from '@/components/ui/MediaCard';
 
@@ -64,11 +61,11 @@ export default function LibraryScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="light" />
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Library</Text>
+      <View style={GlobalStyles.container}>
+        <View style={GlobalStyles.header}>
+          <Text style={TextStyles.headerTitle}>Library</Text>
         </View>
         
         <CategoryTabs 
@@ -78,8 +75,8 @@ export default function LibraryScreen() {
         />
         
         {loading ? (
-          <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Loading...</Text>
+          <View style={GlobalStyles.loadingContainer}>
+            <Text style={GlobalStyles.loadingText}>Loading...</Text>
           </View>
         ) : (
           <FlatList
@@ -95,14 +92,14 @@ export default function LibraryScreen() {
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
               if (item.type === 'heading') {
-                return <Text style={styles.sectionTitle}>{item.title}</Text>;
-              } else if (item.type === 'continue') {
+                return <Text style={TextStyles.sectionTitle}>{item.title}</Text>;
+              } else if (item.type === 'continue' && item.data) {
                 return (
                   <FlatList
-                    data={item.data}
+                    data={item.data as HistoryItem[]}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.horizontalList}
+                    contentContainerStyle={LayoutStyles.horizontalList}
                     keyExtractor={historyItem => historyItem.id}
                     renderItem={({ item: historyItem }) => (
                       <MediaCard
@@ -118,12 +115,12 @@ export default function LibraryScreen() {
                       />
                     )}
                     ListEmptyComponent={
-                      <Text style={styles.emptyText}>No items to continue watching</Text>
+                      <Text style={GlobalStyles.emptyText}>No items to continue watching</Text>
                     }
                   />
                 );
-              } else if (item.type === 'bookmarks' || item.type === 'history') {
-                const mediaItems = item.data.map(mediaItem => ({
+              } else if (item.type === 'bookmarks' && item.data) {
+                const mediaItems = (item.data as BookmarkItem[]).map(mediaItem => ({
                   id: mediaItem.mediaId,
                   title: mediaItem.mediaTitle,
                   type: mediaItem.mediaType,
@@ -136,17 +133,42 @@ export default function LibraryScreen() {
                     data={mediaItems}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.horizontalList}
+                    contentContainerStyle={LayoutStyles.horizontalList}
                     keyExtractor={mediaItem => mediaItem.id}
                     renderItem={({ item: mediaItem }) => (
                       <MediaCard item={mediaItem} />
                     )}
                     ListEmptyComponent={
-                      <Text style={styles.emptyText}>No {item.type}</Text>
+                      <Text style={GlobalStyles.emptyText}>No bookmarks</Text>
+                    }
+                  />
+                );
+              } else if (item.type === 'history' && item.data) {
+                const mediaItems = (item.data as HistoryItem[]).map(mediaItem => ({
+                  id: mediaItem.mediaId,
+                  title: mediaItem.mediaTitle,
+                  type: mediaItem.mediaType,
+                  coverImage: mediaItem.coverImage,
+                  description: '',
+                }));
+                
+                return (
+                  <FlatList
+                    data={mediaItems}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={LayoutStyles.horizontalList}
+                    keyExtractor={mediaItem => mediaItem.id}
+                    renderItem={({ item: mediaItem }) => (
+                      <MediaCard item={mediaItem} />
+                    )}
+                    ListEmptyComponent={
+                      <Text style={GlobalStyles.emptyText}>No history</Text>
                     }
                   />
                 );
               }
+              return null;
             }}
           />
         )}
@@ -155,49 +177,4 @@ export default function LibraryScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.background.dark,
-  },
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.xl,
-    paddingBottom: Spacing.sm,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: Typography.fontSize['2xl'],
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-  },
-  sectionTitle: {
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    paddingHorizontal: Spacing.md,
-    marginTop: Spacing.xl,
-    marginBottom: Spacing.md,
-  },
-  horizontalList: {
-    paddingHorizontal: Spacing.md,
-  },
-  emptyText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-    padding: Spacing.md,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-  },
-});
+// Remove the entire StyleSheet.create() block as we're now using global styles

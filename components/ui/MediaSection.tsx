@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowRight } from 'lucide-react-native';
 import { Colors } from '../../constants/colors';
-import { Typography } from '../../constants/typography';
 import { Spacing } from '../../constants/spacing';
+import { ComponentStyles, ButtonStyles, TextStyles, LayoutStyles } from '../../styles';
 import { Media } from '../../types/media';
 import MediaCard from './MediaCard';
 
@@ -36,15 +36,15 @@ const MediaSection: React.FC<MediaSectionProps> = ({
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
+    <View style={ComponentStyles.mediaSectionContainer}>
+      <View style={ComponentStyles.mediaSectionHeader}>
+        <Text style={TextStyles.subtitle}>{title}</Text>
         {showViewAll && viewAllRoute && (
           <Pressable 
-            style={styles.viewAllButton}
-            onPress={() => router.push(viewAllRoute)}
+            style={ButtonStyles.viewAllButton}
+            onPress={() => router.push(viewAllRoute as any)}
           >
-            <Text style={styles.viewAllText}>View All</Text>
+            <Text style={ButtonStyles.viewAllText}>View All</Text>
             <ArrowRight size={16} color={Colors.primary} style={{ marginLeft: Spacing.xs }} />
           </Pressable>
         )}
@@ -55,7 +55,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
+          contentContainerStyle={LayoutStyles.listContainer}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <MediaCard 
@@ -71,8 +71,8 @@ const MediaSection: React.FC<MediaSectionProps> = ({
           data={data}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.gridContainer}
-          columnWrapperStyle={styles.columnWrapper}
+          contentContainerStyle={LayoutStyles.gridContainer}
+          columnWrapperStyle={LayoutStyles.columnWrapper}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <MediaCard 
@@ -87,41 +87,5 @@ const MediaSection: React.FC<MediaSectionProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: Spacing.xl,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-    paddingHorizontal: Spacing.md,
-  },
-  title: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.bold,
-  },
-  viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  viewAllText: {
-    color: Colors.primary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  listContainer: {
-    paddingHorizontal: Spacing.md,
-  },
-  gridContainer: {
-    paddingHorizontal: Spacing.md,
-  },
-  columnWrapper: {
-    justifyContent: 'space-between',
-  },
-});
 
 export default MediaSection;

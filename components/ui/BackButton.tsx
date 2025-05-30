@@ -1,9 +1,9 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import { Colors } from '../../constants/colors';
-import { Spacing } from '../../constants/spacing';
+import { ComponentStyles } from '../../styles';
 
 interface BackButtonProps {
   color?: string;
@@ -28,7 +28,7 @@ const BackButton: React.FC<BackButtonProps> = ({
 
   return (
     <Pressable
-      style={styles.button}
+      style={ComponentStyles.backButtonContainer}
       onPress={handlePress}
       hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
     >
@@ -36,11 +36,5 @@ const BackButton: React.FC<BackButtonProps> = ({
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    padding: Spacing.xs,
-  },
-});
 
 export default BackButton;

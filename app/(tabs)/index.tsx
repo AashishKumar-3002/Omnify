@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Colors } from '@/constants/colors';
-import { Typography } from '@/constants/typography';
-import { Spacing } from '@/constants/spacing';
+import { GlobalStyles, TextStyles } from '@/styles';
 import { Movie, Series, Anime, Manga } from '@/types/media';
 import { api } from '@/utils/api';
 import CategoryTabs from '@/components/ui/CategoryTabs';
@@ -113,10 +111,10 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="light" />
-      <View style={styles.container}>
-        <Text style={styles.headerTitle}>Entertainment Hub</Text>
+      <View style={GlobalStyles.container}>
+        <Text style={TextStyles.headerTitle}>Entertainment Hub</Text>
         
         <CategoryTabs 
           categories={categories}
@@ -126,10 +124,10 @@ export default function HomeScreen() {
         
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={GlobalStyles.scrollContent}
         >
           {loading ? (
-            <Text style={styles.loadingText}>Loading...</Text>
+            <Text style={TextStyles.bodyTextSecondary}>Loading...</Text>
           ) : (
             renderContent()
           )}
@@ -138,31 +136,3 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.background.dark,
-  },
-  container: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: Typography.fontSize['2xl'],
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.xl,
-    paddingBottom: Spacing.sm,
-  },
-  scrollContent: {
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing['3xl'],
-  },
-  loadingText: {
-    color: Colors.text.secondary,
-    textAlign: 'center',
-    marginTop: Spacing['2xl'],
-    fontSize: Typography.fontSize.md,
-  },
-});

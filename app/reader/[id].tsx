@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams } from 'expo-router';
 import { Book, Bookmark, BookmarkCheck } from 'lucide-react-native';
+import { GlobalStyles, ComponentStyles, LayoutStyles } from '@/styles';
 import { Colors } from '@/constants/colors';
 import { Typography } from '@/constants/typography';
-import { Spacing } from '@/constants/spacing';
-import { Layout } from '@/constants/layout';
 import { api } from '@/utils/api';
 import { Novel, Manga, Chapter } from '@/types/media';
 import BackButton from '@/components/ui/BackButton';
@@ -43,10 +42,11 @@ export default function ReaderScreen() {
         setLoading(true);
         const mediaData = await api.getMediaById(id);
         if (mediaData && (mediaData.type === 'novel' || mediaData.type === 'manga')) {
-          setMedia(mediaData as Novel | Manga);
+          const typedMedia = mediaData as Novel | Manga;
+          setMedia(typedMedia);
           
-          if ('chapters' in mediaData && mediaData.chapters.length > 0) {
-            setChapter(mediaData.chapters[0]);
+          if (typedMedia.chapters && typedMedia.chapters.length > 0) {
+            setChapter(typedMedia.chapters[0]);
           }
         }
         
@@ -126,29 +126,29 @@ export default function ReaderScreen() {
   
   if (loading || !media || !chapter) {
     return (
-      <SafeAreaView style={[styles.loadingContainer, { backgroundColor: getBackgroundColor() }]}>
-        <Text style={[styles.loadingText, { color: getTextColor() }]}>Loading...</Text>
+      <SafeAreaView style={[GlobalStyles.loadingContainer, { backgroundColor: getBackgroundColor() }]}>
+        <Text style={[GlobalStyles.loadingText, { color: getTextColor() }]}>Loading...</Text>
       </SafeAreaView>
     );
   }
   
   return (
-    <View style={[styles.container, { backgroundColor: getBackgroundColor() }]}>
+    <View style={[ComponentStyles.readerContainer, { backgroundColor: getBackgroundColor() }]}>
       <StatusBar style={settings.theme === 'dark' ? 'light' : 'dark'} />
       
       <Pressable
-        style={styles.contentContainer}
+        style={{ flex: 1 }}
         onPress={toggleControls}
       >
         <ScrollView 
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
+          style={ComponentStyles.readerScrollView}
+          contentContainerStyle={ComponentStyles.readerScrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.chapterTitle}>{chapter.title}</Text>
+          <Text style={ComponentStyles.chapterTitle}>{chapter.title}</Text>
           <Text 
             style={[
-              styles.content, 
+              ComponentStyles.readerText, 
               { 
                 color: getTextColor(),
                 fontSize: settings.fontSize,
@@ -164,10 +164,10 @@ export default function ReaderScreen() {
       
       {showControls && (
         <>
-          <SafeAreaView style={styles.topControls}>
+          <SafeAreaView style={ComponentStyles.readerTopControls}>
             <BackButton color={getTextColor()} />
-            <View style={styles.rightControls}>
-              <Pressable onPress={toggleBookmark} style={styles.controlButton}>
+            <View style={ComponentStyles.rightControls}>
+              <Pressable onPress={toggleBookmark} style={ComponentStyles.controlButton}>
                 {isBookmarked ? (
                   <BookmarkCheck color={Colors.primary} size={24} fill={Colors.primary} />
                 ) : (
@@ -176,7 +176,7 @@ export default function ReaderScreen() {
               </Pressable>
               <Pressable 
                 onPress={() => setShowSettings(!showSettings)} 
-                style={styles.controlButton}
+                style={ComponentStyles.controlButton}
               >
                 <Book color={showSettings ? Colors.primary : getTextColor()} size={24} />
               </Pressable>
@@ -184,108 +184,108 @@ export default function ReaderScreen() {
           </SafeAreaView>
           
           {showSettings && (
-            <SafeAreaView style={styles.settingsContainer}>
-              <Text style={[styles.settingsTitle, { color: getTextColor() }]}>Font</Text>
-              <View style={styles.settingsRow}>
+            <SafeAreaView style={ComponentStyles.settingsContainer}>
+              <Text style={[ComponentStyles.settingsTitle, { color: getTextColor() }]}>Font</Text>
+              <View style={LayoutStyles.settingsRow}>
                 <Pressable 
                   style={[
-                    styles.settingButton, 
-                    settings.fontSize === Typography.fontSize.sm && styles.activeSettingButton
+                    ComponentStyles.settingButton, 
+                    settings.fontSize === Typography.fontSize.sm && ComponentStyles.activeSettingButton
                   ]}
                   onPress={() => setSettings({ ...settings, fontSize: Typography.fontSize.sm })}
                 >
                   <Text style={[
-                    styles.settingButtonText,
-                    settings.fontSize === Typography.fontSize.sm && styles.activeSettingText
+                    ComponentStyles.settingButtonText,
+                    settings.fontSize === Typography.fontSize.sm && ComponentStyles.activeSettingText
                   ]}>A</Text>
                 </Pressable>
                 <Pressable 
                   style={[
-                    styles.settingButton, 
-                    settings.fontSize === Typography.fontSize.md && styles.activeSettingButton
+                    ComponentStyles.settingButton, 
+                    settings.fontSize === Typography.fontSize.md && ComponentStyles.activeSettingButton
                   ]}
                   onPress={() => setSettings({ ...settings, fontSize: Typography.fontSize.md })}
                 >
                   <Text style={[
-                    styles.settingButtonText,
+                    ComponentStyles.settingButtonText,
                     { fontSize: Typography.fontSize.md },
-                    settings.fontSize === Typography.fontSize.md && styles.activeSettingText
+                    settings.fontSize === Typography.fontSize.md && ComponentStyles.activeSettingText
                   ]}>A</Text>
                 </Pressable>
                 <Pressable 
                   style={[
-                    styles.settingButton, 
-                    settings.fontSize === Typography.fontSize.lg && styles.activeSettingButton
+                    ComponentStyles.settingButton, 
+                    settings.fontSize === Typography.fontSize.lg && ComponentStyles.activeSettingButton
                   ]}
                   onPress={() => setSettings({ ...settings, fontSize: Typography.fontSize.lg })}
                 >
                   <Text style={[
-                    styles.settingButtonText,
+                    ComponentStyles.settingButtonText,
                     { fontSize: Typography.fontSize.lg },
-                    settings.fontSize === Typography.fontSize.lg && styles.activeSettingText
+                    settings.fontSize === Typography.fontSize.lg && ComponentStyles.activeSettingText
                   ]}>A</Text>
                 </Pressable>
               </View>
               
-              <Text style={[styles.settingsTitle, { color: getTextColor() }]}>Theme</Text>
-              <View style={styles.settingsRow}>
+              <Text style={[ComponentStyles.settingsTitle, { color: getTextColor() }]}>Theme</Text>
+              <View style={LayoutStyles.settingsRow}>
                 <Pressable 
                   style={[
-                    styles.themeButton,
+                    ComponentStyles.themeButton,
                     { backgroundColor: '#ffffff' },
-                    settings.theme === 'light' && styles.activeThemeButton
+                    settings.theme === 'light' && ComponentStyles.activeThemeButton
                   ]}
                   onPress={() => setSettings({ ...settings, theme: 'light' })}
                 >
                   <Text style={[
-                    styles.themeButtonText,
+                    ComponentStyles.themeButtonText,
                     { color: '#333333' },
                   ]}>Light</Text>
                 </Pressable>
                 <Pressable 
                   style={[
-                    styles.themeButton,
+                    ComponentStyles.themeButton,
                     { backgroundColor: '#f8f1e3' },
-                    settings.theme === 'sepia' && styles.activeThemeButton
+                    settings.theme === 'sepia' && ComponentStyles.activeThemeButton
                   ]}
                   onPress={() => setSettings({ ...settings, theme: 'sepia' })}
                 >
                   <Text style={[
-                    styles.themeButtonText,
+                    ComponentStyles.themeButtonText,
                     { color: '#5b4636' },
                   ]}>Sepia</Text>
                 </Pressable>
                 <Pressable 
                   style={[
-                    styles.themeButton,
+                    ComponentStyles.themeButton,
                     { backgroundColor: Colors.background.dark },
-                    settings.theme === 'dark' && styles.activeThemeButton
+                    settings.theme === 'dark' && ComponentStyles.activeThemeButton
                   ]}
                   onPress={() => setSettings({ ...settings, theme: 'dark' })}
                 >
                   <Text style={[
-                    styles.themeButtonText,
+                    ComponentStyles.themeButtonText,
                     { color: Colors.text.primary },
                   ]}>Dark</Text>
                 </Pressable>
               </View>
               
-              <View style={styles.tableOfContents}>
-                <Text style={[styles.tocTitle, { color: getTextColor() }]}>Table of Contents</Text>
-                <Pressable style={styles.tocItem}>
+              <View style={ComponentStyles.tableOfContents}>
+                <Text style={[ComponentStyles.tocTitle, { color: getTextColor() }]}>Table of Contents</Text>
+                <Pressable style={ComponentStyles.tocItem}>
                   <Text style={[
-                    styles.tocItemText, 
+                    ComponentStyles.tocItemText, 
                     { color: getTextColor() },
                     chapter.number === 1 && { color: Colors.primary, fontFamily: Typography.fontFamily.medium }
                   ]}>
                     Chapter 1
                   </Text>
                 </Pressable>
-                <Pressable style={styles.tocItem}>
-                  <Text style={[styles.tocItemText, { color: getTextColor() }]}>Chapter 2</Text>
+                <Pressable style={ComponentStyles.tocItem}>
+                  <Text style={[ComponentStyles.tocItemText, { color: getTextColor() }]}>Chapter 2</Text>
                 </Pressable>
-                <Pressable style={styles.tocItem}>
-                  <Text style={[styles.tocItemText, { color: getTextColor() }]}>Chapter 3</Text>
+                <Pressable style={ComponentStyles.tocItem}>
+                  <Text style={[ComponentStyles.tocItemText, { color: getTextColor() }]}>Chapter 3</Text>
                 </Pressable>
               </View>
             </SafeAreaView>
@@ -295,131 +295,3 @@ export default function ReaderScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: Typography.fontSize.lg,
-  },
-  contentContainer: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: Spacing.xl,
-    paddingTop: Spacing['3xl'],
-    paddingBottom: Spacing['4xl'],
-  },
-  chapterTitle: {
-    fontSize: Typography.fontSize.xl,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginBottom: Spacing.lg,
-  },
-  content: {
-    fontSize: Typography.fontSize.md,
-    lineHeight: Typography.lineHeight.lg,
-    fontFamily: Typography.fontFamily.regular,
-  },
-  topControls: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: Spacing.md,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  rightControls: {
-    flexDirection: 'row',
-  },
-  controlButton: {
-    marginLeft: Spacing.md,
-    padding: Spacing.xs,
-  },
-  settingsContainer: {
-    position: 'absolute',
-    top: 70,
-    right: 0,
-    width: '80%',
-    backgroundColor: Colors.background.medium,
-    borderTopLeftRadius: Layout.radius.lg,
-    borderBottomLeftRadius: Layout.radius.lg,
-    padding: Spacing.lg,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  settingsTitle: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginBottom: Spacing.sm,
-  },
-  settingsRow: {
-    flexDirection: 'row',
-    marginBottom: Spacing.lg,
-  },
-  settingButton: {
-    width: 44,
-    height: 44,
-    borderRadius: Layout.radius.md,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-  activeSettingButton: {
-    backgroundColor: Colors.primary,
-  },
-  settingButtonText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-  },
-  activeSettingText: {
-    color: Colors.background.dark,
-  },
-  themeButton: {
-    flex: 1,
-    height: 44,
-    borderRadius: Layout.radius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-  activeThemeButton: {
-    borderWidth: 2,
-    borderColor: Colors.primary,
-  },
-  themeButtonText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  tableOfContents: {
-    marginTop: Spacing.lg,
-  },
-  tocTitle: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginBottom: Spacing.sm,
-  },
-  tocItem: {
-    paddingVertical: Spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.divider,
-  },
-  tocItemText: {
-    fontSize: Typography.fontSize.md,
-  },
-});
