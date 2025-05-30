@@ -6,7 +6,7 @@ export * from './text';
 export * from './buttons';
 export * from './forms';
 export { 
-  createTheme, 
+  createTheme,
   useTheme, 
   ThemeProvider,
   defaultTheme,
