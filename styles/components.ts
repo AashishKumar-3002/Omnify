@@ -83,12 +83,13 @@ export const ComponentStyles = StyleSheet.create({
   
   categoryTabIndicator: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -3, // move underline further below text
     left: 0,
     right: 0,
-    height: 2,
+    height: 1, // thinner underline
     backgroundColor: Colors.primary,
-    borderRadius: 1,
+    borderRadius: 2, // more rounded
+    marginTop: 3, // space between text and underline
   },
   
   // Media Section
