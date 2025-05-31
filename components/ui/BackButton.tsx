@@ -3,7 +3,6 @@ import { Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import { Colors } from '../../constants/colors';
-import { ComponentStyles } from '../../styles';
 
 interface BackButtonProps {
   color?: string;
@@ -28,7 +27,7 @@ const BackButton: React.FC<BackButtonProps> = ({
 
   return (
     <Pressable
-      style={ComponentStyles.backButtonContainer}
+      className="p-xs"
       onPress={handlePress}
       hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
     >

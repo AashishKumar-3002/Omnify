@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
-import { ComponentStyles } from '../../styles';
+import { cn } from '@/lib/utils';
 
 interface CategoryTabsProps {
   categories: string[];
@@ -17,23 +17,25 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
     <ScrollView 
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={ComponentStyles.categoryTabsContainer}
+      className="py-sm px-md"
     >
       {categories.map((category) => {
         const isActive = category === activeCategory;
         return (
           <Pressable
             key={category}
-            style={ComponentStyles.categoryTab}
+            className="mr-xl py-xs relative"
             onPress={() => onCategoryChange(category)}
           >
-            <Text style={[
-              ComponentStyles.categoryTabText,
-              isActive && ComponentStyles.categoryTabActive
-            ]}>
+            <Text className={cn(
+              "text-text-secondary font-sans-medium text-base",
+              isActive && "text-text-primary font-sans-bold"
+            )}>
               {category}
             </Text>
-            {isActive && <View style={ComponentStyles.categoryTabIndicator} />}
+            {isActive && (
+              <View className="absolute bottom-[-3px] left-0 right-0 h-[1px] bg-primary rounded" />
+            )}
           </Pressable>
         );
       })}
