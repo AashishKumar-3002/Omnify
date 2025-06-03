@@ -7,17 +7,17 @@ import { Colors } from '@/constants/colors';
 
 export default function DownloadsScreen() {
   return (
-    <SafeAreaView style={GlobalStyles.safeArea}>
+    <SafeAreaView className={GlobalStyles.safeArea}>
       <StatusBar style="light" />
-      <View style={GlobalStyles.container}>
-        <Text style={TextStyles.headerTitle}>Downloads</Text>
+      <View className={GlobalStyles.container}>
+        <Text className={TextStyles.headerTitle}>Downloads</Text>
         
-        <View style={GlobalStyles.emptyContainer}>
-          <View style={GlobalStyles.emptyIconContainer}>
+        <View className={GlobalStyles.emptyContainer}>
+          <View className={GlobalStyles.emptyIconContainer}>
             <Download size={48} color={Colors.text.secondary} />
           </View>
-          <Text style={GlobalStyles.emptyTitle}>No Downloads</Text>
-          <Text style={GlobalStyles.emptyText}>
+          <Text className={GlobalStyles.emptyTitle}>No Downloads</Text>
+          <Text className={GlobalStyles.emptyText}>
             Download your favorite content to watch offline
           </Text>
         </View>

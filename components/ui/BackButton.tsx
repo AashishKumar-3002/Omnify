@@ -28,7 +28,7 @@ const BackButton: React.FC<BackButtonProps> = ({
 
   return (
     <Pressable
-      style={ComponentStyles.backButtonContainer}
+      className={ComponentStyles.backButtonContainer}
       onPress={handlePress}
       hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
     >

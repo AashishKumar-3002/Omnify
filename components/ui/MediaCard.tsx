@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ComponentStyles, TextStyles, LayoutStyles } from '../../styles';
 import { Media } from '../../types/media';
 
 interface MediaCardProps {
@@ -51,29 +50,28 @@ const MediaCard: React.FC<MediaCardProps> = ({
   const dimensions = getCardDimensions();
 
   return (
-    <Pressable onPress={handlePress} style={[ComponentStyles.mediaCard, { width: dimensions.width }]}>
-      <View style={[LayoutStyles.imageContainer, { height: dimensions.height }]}>
-        <Image
-          source={{ uri: item.coverImage }}
-          style={LayoutStyles.image}
-          resizeMode="cover"
-        />
-        
-        {showProgress && progress > 0 && (
-          <View style={ComponentStyles.mediaCardProgress}>
-            <View style={[LayoutStyles.progressBar, { width: `${progress}%` }]} />
-          </View>
-        )}
-      </View>
-      
+    <Pressable
+      className="rounded-lg overflow-hidden bg-background-light shadow-md"
+      style={{ width: dimensions.width, height: dimensions.height }}
+      onPress={handlePress}
+    >
+      <Image
+        source={{ uri: item.coverImage || 'https://via.placeholder.com/150' }}
+        className="w-full h-3/4"
+        resizeMode="cover"
+      />
       {showTitle && (
-        <Text
-          style={TextStyles.cardTitle}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {item.title}
-        </Text>
+        <View className="p-sm">
+          <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>{item.title}</Text>
+        </View>
+      )}
+      {showProgress && (
+        <View className="h-1 bg-background-medium">
+          <View
+            className="h-full bg-primary"
+            style={{ width: `${progress}%` }}
+          />
+        </View>
       )}
     </Pressable>
   );

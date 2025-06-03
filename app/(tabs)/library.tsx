@@ -1,49 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { GlobalStyles, TextStyles, LayoutStyles } from '@/styles';
-import { HistoryItem, BookmarkItem } from '@/types/media';
-import { api } from '@/utils/api';
 import CategoryTabs from '@/components/ui/CategoryTabs';
 import MediaCard from '@/components/ui/MediaCard';
+import { Media } from '@/types/media';
 
 const categories = ['All', 'Movies & Series', 'Anime'];
 
 export default function LibraryScreen() {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [bookmarks, setBookmarks] = useState<BookmarkItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState<Media[]>([]);
+  const [bookmarks, setBookmarks] = useState<Media[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [historyData, bookmarksData] = await Promise.all([
-          api.getHistory(),
-          api.getBookmarks(),
-        ]);
-        
-        setHistory(historyData);
-        setBookmarks(bookmarksData);
-      } catch (error) {
-        console.error('Error fetching library data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    // Mock data fetching
+    setHistory([
+      { id: '1', title: 'The Last of Us', type: 'series', coverImage: '', description: '' },
+      { id: '2', title: 'Attack on Titan', type: 'anime', coverImage: '', description: '' },
+    ]);
+    setBookmarks([
+      { id: '3', title: 'The Last of Us', type: 'series', coverImage: '', description: '' },
+      { id: '4', title: 'Attack on Titan', type: 'anime', coverImage: '', description: '' },
+    ]);
   }, []);
 
   const filteredHistory = () => {
     if (activeCategory === 'All') return history;
     if (activeCategory === 'Movies & Series') {
-      return history.filter(item => 
-        item.mediaType === 'movie' || item.mediaType === 'series');
+      return history.filter(item => item.type === 'movie' || item.type === 'series');
     }
     if (activeCategory === 'Anime') {
-      return history.filter(item => item.mediaType === 'anime');
+      return history.filter(item => item.type === 'anime');
     }
     return [];
   };
@@ -51,130 +38,51 @@ export default function LibraryScreen() {
   const filteredBookmarks = () => {
     if (activeCategory === 'All') return bookmarks;
     if (activeCategory === 'Movies & Series') {
-      return bookmarks.filter(item => 
-        item.mediaType === 'movie' || item.mediaType === 'series');
+      return bookmarks.filter(item => item.type === 'movie' || item.type === 'series');
     }
     if (activeCategory === 'Anime') {
-      return bookmarks.filter(item => item.mediaType === 'anime');
+      return bookmarks.filter(item => item.type === 'anime');
     }
     return [];
   };
 
   return (
-    <SafeAreaView style={GlobalStyles.safeArea}>
+    <SafeAreaView className="flex-1 bg-background-dark">
       <StatusBar style="light" />
-      <View style={GlobalStyles.container}>
-        <View style={GlobalStyles.header}>
-          <Text style={TextStyles.headerTitle}>Library</Text>
-        </View>
-        
-        <CategoryTabs 
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-        />
-        
-        {loading ? (
-          <View style={GlobalStyles.loadingContainer}>
-            <Text style={GlobalStyles.loadingText}>Loading...</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={[
-              { type: 'heading', id: 'continue-heading', title: 'Continue Watching' },
-              { type: 'continue', id: 'continue-list', data: filteredHistory() },
-              { type: 'heading', id: 'bookmarks-heading', title: 'Bookmarks' },
-              { type: 'bookmarks', id: 'bookmarks-list', data: filteredBookmarks() },
-              { type: 'heading', id: 'history-heading', title: 'History' },
-              { type: 'history', id: 'history-list', data: filteredHistory() },
-            ]}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-              if (item.type === 'heading') {
-                return <Text style={TextStyles.sectionTitle}>{item.title}</Text>;
-              } else if (item.type === 'continue' && item.data) {
-                return (
-                  <FlatList
-                    data={item.data as HistoryItem[]}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={LayoutStyles.horizontalList}
-                    keyExtractor={historyItem => historyItem.id}
-                    renderItem={({ item: historyItem }) => (
-                      <MediaCard
-                        item={{
-                          id: historyItem.mediaId,
-                          title: historyItem.mediaTitle,
-                          type: historyItem.mediaType,
-                          coverImage: historyItem.coverImage,
-                          description: '',
-                        }}
-                        showProgress={true}
-                        progress={historyItem.progress}
-                      />
-                    )}
-                    ListEmptyComponent={
-                      <Text style={GlobalStyles.emptyText}>No items to continue watching</Text>
-                    }
-                  />
-                );
-              } else if (item.type === 'bookmarks' && item.data) {
-                const mediaItems = (item.data as BookmarkItem[]).map(mediaItem => ({
-                  id: mediaItem.mediaId,
-                  title: mediaItem.mediaTitle,
-                  type: mediaItem.mediaType,
-                  coverImage: mediaItem.coverImage,
-                  description: '',
-                }));
-                
-                return (
-                  <FlatList
-                    data={mediaItems}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={LayoutStyles.horizontalList}
-                    keyExtractor={mediaItem => mediaItem.id}
-                    renderItem={({ item: mediaItem }) => (
-                      <MediaCard item={mediaItem} />
-                    )}
-                    ListEmptyComponent={
-                      <Text style={GlobalStyles.emptyText}>No bookmarks</Text>
-                    }
-                  />
-                );
-              } else if (item.type === 'history' && item.data) {
-                const mediaItems = (item.data as HistoryItem[]).map(mediaItem => ({
-                  id: mediaItem.mediaId,
-                  title: mediaItem.mediaTitle,
-                  type: mediaItem.mediaType,
-                  coverImage: mediaItem.coverImage,
-                  description: '',
-                }));
-                
-                return (
-                  <FlatList
-                    data={mediaItems}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={LayoutStyles.horizontalList}
-                    keyExtractor={mediaItem => mediaItem.id}
-                    renderItem={({ item: mediaItem }) => (
-                      <MediaCard item={mediaItem} />
-                    )}
-                    ListEmptyComponent={
-                      <Text style={GlobalStyles.emptyText}>No history</Text>
-                    }
-                  />
-                );
-              }
-              return null;
-            }}
-          />
-        )}
+      <View className="px-md pt-xl pb-sm">
+        <Text className="text-2xl font-bold text-primary">Library</Text>
       </View>
+      <CategoryTabs 
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryChange={setActiveCategory}
+      />
+      <FlatList
+        data={filteredHistory()}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <MediaCard item={item} />
+        )}
+        ListHeaderComponent={() => (
+          <Text className="text-lg font-bold text-primary px-md mt-xl mb-md">Continue Watching</Text>
+        )}
+        ListEmptyComponent={() => (
+          <Text className="text-sm text-secondary px-md">No items to display</Text>
+        )}
+      />
+      <FlatList
+        data={filteredBookmarks()}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <MediaCard item={item} />
+        )}
+        ListHeaderComponent={() => (
+          <Text className="text-lg font-bold text-primary px-md mt-xl mb-md">Bookmarks</Text>
+        )}
+        ListEmptyComponent={() => (
+          <Text className="text-sm text-secondary px-md">No items to display</Text>
+        )}
+      />
     </SafeAreaView>
   );
 }
-
-// Remove the entire StyleSheet.create() block as we're now using global styles

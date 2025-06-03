@@ -107,13 +107,13 @@ export default function MediaDetailScreen() {
     if (!seriesOrAnime.episodes || seriesOrAnime.episodes.length === 0) return null;
     
     return (
-      <View style={ComponentStyles.episodesContainer}>
-        <Text style={TextStyles.sectionTitle}>Episodes</Text>
+      <View className={ComponentStyles.episodesContainer}>
+        <Text className={TextStyles.sectionTitle}>Episodes</Text>
         
         {seriesOrAnime.episodes.map((episode: Episode) => (
           <Pressable
             key={episode.id}
-            style={ComponentStyles.episodeItem}
+            className={LayoutStyles.episodeItem}
             onPress={() => {
               router.push({
                 pathname: '/media/player',
@@ -135,16 +135,16 @@ export default function MediaDetailScreen() {
           >
             <Image 
               source={{ uri: episode.thumbnailUrl }}
-              style={ComponentStyles.episodeThumbnail}
+              className={LayoutStyles.episodeThumbnail}
             />
-            <View style={ComponentStyles.episodeInfo}>
-              <Text style={TextStyles.episodeNumber}>
+            <View className={LayoutStyles.episodeInfo}>
+              <Text className={TextStyles.episodeNumber}>
                 S{episode.season} E{episode.number}
               </Text>
-              <Text style={TextStyles.episodeTitle}>{episode.title}</Text>
-              <Text style={TextStyles.episodeDuration}>{episode.duration}</Text>
+              <Text className={TextStyles.episodeTitle}>{episode.title}</Text>
+              <Text className={TextStyles.episodeDuration}>{episode.duration}</Text>
             </View>
-            <View style={ComponentStyles.episodePlay}>
+            <View className={LayoutStyles.episodePlay}>
               <Play size={20} color={Colors.primary} />
             </View>
           </Pressable>
@@ -155,59 +155,59 @@ export default function MediaDetailScreen() {
   
   if (loading || !media) {
     return (
-      <SafeAreaView style={GlobalStyles.loadingContainer}>
-        <Text style={GlobalStyles.loadingText}>Loading...</Text>
+      <SafeAreaView className={GlobalStyles.loadingContainer}>
+        <Text className={GlobalStyles.loadingText}>Loading...</Text>
       </SafeAreaView>
     );
   }
   
   return (
-    <View style={GlobalStyles.container}>
+    <View className={GlobalStyles.container}>
       <StatusBar style="light" />
       
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={LayoutStyles.heroContainer}>
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+        <View className={LayoutStyles.heroContainer}>
           <Image
             source={{ uri: media.coverImage }}
-            style={LayoutStyles.heroImage}
+            className={LayoutStyles.heroImage}
             resizeMode="cover"
           />
           <LinearGradient
             colors={Colors.gradients.dark as any}
-            style={GlobalStyles.gradientOverlay}
+            className={GlobalStyles.gradientOverlay}
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}
           />
-          <SafeAreaView style={LayoutStyles.topBar}>
+          <SafeAreaView className={LayoutStyles.topBar}>
             <BackButton />
           </SafeAreaView>
         </View>
         
-        <View style={ComponentStyles.contentContainer}>
-          <Text style={TextStyles.title}>{media.title}</Text>
+        <View className={ComponentStyles.contentContainer}>
+          <Text className={TextStyles.title}>{media.title}</Text>
           
-          <View style={ComponentStyles.metaContainer}>
+          <View className={ComponentStyles.metaContainer}>
             {media.releaseYear && (
-              <Text style={TextStyles.metaText}>{media.releaseYear}</Text>
+              <Text className={TextStyles.metaText}>{media.releaseYear}</Text>
             )}
             {media.rating && (
-              <View style={ComponentStyles.ratingContainer}>
+              <View className={ComponentStyles.ratingContainer}>
                 <Star size={14} color={Colors.primary} fill={Colors.primary} />
-                <Text style={ComponentStyles.ratingText}>{media.rating.toFixed(1)}</Text>
+                <Text className={ComponentStyles.ratingText}>{media.rating.toFixed(1)}</Text>
               </View>
             )}
-            <Text style={TextStyles.metaText}>{media.type.charAt(0).toUpperCase() + media.type.slice(1)}</Text>
+            <Text className={TextStyles.metaText}>{media.type.charAt(0).toUpperCase() + media.type.slice(1)}</Text>
           </View>
           
-          <View style={ComponentStyles.actionContainer}>
-            <Pressable style={ComponentStyles.playButton} onPress={handlePlayPress}>
+          <View className={ComponentStyles.actionContainer}>
+            <Pressable onPress={handlePlayPress} className={ComponentStyles.playButton}>
               <Play size={20} color={Colors.background.dark} />
-              <Text style={ComponentStyles.playButtonText}>
+              <Text className={ComponentStyles.playButtonText}>
                 {media.type === 'movie' ? 'Play Movie' : 'Play Episode 1'}
               </Text>
             </Pressable>
             
-            <Pressable style={ComponentStyles.bookmarkButton} onPress={toggleBookmark}>
+            <Pressable onPress={toggleBookmark} className={ComponentStyles.bookmarkButton}>
               {isBookmarked ? (
                 <BookmarkCheck size={20} color={Colors.primary} fill={Colors.primary} />
               ) : (
@@ -216,9 +216,9 @@ export default function MediaDetailScreen() {
             </Pressable>
           </View>
           
-          <View style={ComponentStyles.descriptionContainer}>
-            <Text style={ComponentStyles.descriptionTitle}>Synopsis</Text>
-            <Text style={TextStyles.description}>{media.description}</Text>
+          <View className={ComponentStyles.descriptionContainer}>
+            <Text className={ComponentStyles.descriptionTitle}>Synopsis</Text>
+            <Text className={TextStyles.description}>{media.description}</Text>
           </View>
           
           {renderEpisodes()}

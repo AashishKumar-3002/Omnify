@@ -6,13 +6,9 @@ export * from './text';
 export * from './buttons';
 export * from './forms';
 export { 
-  createTheme,
   useTheme, 
   ThemeProvider,
-  defaultTheme,
   readerThemes,
-  getReaderThemeByName,
-  getReaderThemeStyles,
-  type Theme,
+  getReaderThemeClasses,
   type ReaderTheme
 } from './theme';

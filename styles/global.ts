@@ -1,152 +1,59 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
-import { Typography } from '../constants/typography';
-import { Spacing } from '../constants/spacing';
-import { Layout } from '../constants/layout';
-
 /**
  * Global styles that are commonly used across the entire application
  */
-export const GlobalStyles = StyleSheet.create({
+export const GlobalStyles = {
   // Safe Area Containers
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.background.dark,
-  },
+  safeArea: 'flex-1 bg-background-dark',
   
   // Main Containers
-  container: {
-    flex: 1,
-  },
+  container: 'flex-1',
   
-  containerWithPadding: {
-    flex: 1,
-    padding: Spacing.md,
-  },
+  containerWithPadding: 'flex-1 p-md',
   
-  contentContainer: {
-    flex: 1,
-    padding: Spacing.md,
-  },
+  contentContainer: 'flex-1 p-md',
   
-  scrollContent: {
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing['3xl'],
-  },
+  scrollContent: 'pt-md pb-3xl',
   
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  centerContainer: 'flex-1 justify-center items-center',
   
   // Loading States
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.background.dark,
-  },
+  loadingContainer: 'flex-1 justify-center items-center bg-background-dark',
   
-  loadingText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.medium,
-  },
+  loadingText: 'text-text-secondary text-lg font-medium',
   
   // Empty States
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.lg,
-  },
+  emptyContainer: 'flex-1 justify-center items-center px-lg',
   
-  emptyIconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: Spacing.lg,
-  },
+  emptyIconContainer: 'w-20 h-20 rounded-full bg-background-light justify-center items-center mb-lg',
   
-  emptyTitle: {
-    fontSize: Typography.fontSize.xl,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginBottom: Spacing.sm,
-  },
+  emptyTitle: 'text-xl font-bold text-text-primary mb-sm',
   
-  emptyText: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.secondary,
-    textAlign: 'center',
-  },
+  emptyText: 'text-md font-regular text-text-secondary text-center',
   
   // Error Page Containers
-  errorPageContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: Spacing.lg,
-    backgroundColor: Colors.background.dark,
-  },
+  errorPageContainer: 'flex-1 items-center justify-center p-lg bg-background-dark',
   
   // Shadow
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-  },
+  shadow: 'shadow-lg',
   
   // Overlays
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
+  overlay: 'absolute inset-0 bg-black/50',
   
-  gradientOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    height: 80,
-    top: 'auto',
-  },
+  gradientOverlay: 'absolute left-0 right-0 bottom-0 h-20',
   
   // Dividers
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: Colors.divider,
-    marginVertical: Spacing.sm,
-  },
+  divider: 'h-px bg-divider my-sm',
   
   // Rounded Corners
-  rounded: {
-    borderRadius: Layout.radius.md,
-  },
+  rounded: 'rounded-md',
   
-  roundedLarge: {
-    borderRadius: Layout.radius.lg,
-  },
+  roundedLarge: 'rounded-lg',
   
-  roundedFull: {
-    borderRadius: Layout.radius.full,
-  },
+  roundedFull: 'rounded-full',
   
   // Video Player Container
-  videoPlayerContainer: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
+  videoPlayerContainer: 'flex-1 bg-black',
   
   // Headers
-  header: {
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.sm,
-    paddingBottom: Spacing.md,
-    backgroundColor: Colors.background.dark,
-  },
-});
+  header: 'px-md pt-sm pb-md bg-background-dark',
+};

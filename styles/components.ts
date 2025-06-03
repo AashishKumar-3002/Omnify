@@ -1,510 +1,72 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
-import { Typography } from '../constants/typography';
-import { Spacing } from '../constants/spacing';
-import { Layout } from '../constants/layout';
-
-/**
- * Component-specific styles that are reused across multiple components
- */
-export const ComponentStyles = StyleSheet.create({
-  // Media Card
-  mediaCard: {
-    marginRight: Spacing.md,
-    marginBottom: Spacing.md,
-  },
-  
-  mediaCardProgress: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 3,
-    backgroundColor: Colors.background.light,
-  },
-  
-  // Settings Item
-  settingsItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.divider,
-  },
-  
-  settingsIconContainer: {
-    marginRight: Spacing.md,
-    width: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  
-  settingsContentContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  
-  settingsTitle: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
-  settingsSubtitle: {
-    color: Colors.text.tertiary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.regular,
-    marginTop: Spacing.xs / 2,
-  },
-  
-  // Category Tabs
-  categoryTabsContainer: {
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-  },
-  
-  categoryTab: {
-    marginRight: Spacing.xl,
-    paddingVertical: Spacing.xs,
-    position: 'relative',
-  },
-  
-  categoryTabText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
-  categoryTabActive: {
-    color: Colors.text.primary,
-    fontFamily: Typography.fontFamily.bold,
-  },
-  
-  categoryTabIndicator: {
-    position: 'absolute',
-    bottom: -3, // move underline further below text
-    left: 0,
-    right: 0,
-    height: 1, // thinner underline
-    backgroundColor: Colors.primary,
-    borderRadius: 2, // more rounded
-    marginTop: 3, // space between text and underline
-  },
-  
-  // Media Section
-  mediaSectionContainer: {
-    marginBottom: Spacing.xl,
-  },
-  
-  mediaSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-    paddingHorizontal: Spacing.md,
-  },
-  
-  // Back Button
-  backButtonContainer: {
-    padding: Spacing.xs,
-  },
-  
-  // Video Player
-  videoContainer: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  
-  video: {
-    width: '100%',
-    height: '100%',
-  },
-  
-  controlsOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'space-between',
-  },
-  
-  // Options Panel
-  optionsPanel: {
-    position: 'absolute',
-    right: 0,
-    top: 70,
-    backgroundColor: Colors.background.medium,
-    borderRadius: Layout.radius.md,
-    padding: Spacing.md,
-    margin: Spacing.md,
-    width: 160,
-  },
-  
-  optionsPanelTitle: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginBottom: Spacing.sm,
-  },
-  
-  optionItem: {
-    paddingVertical: Spacing.sm,
-  },
-  
-  optionText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-  },
-  
-  optionTextActive: {
-    color: Colors.primary,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
-  // Reader Settings
-  readerSettingsContainer: {
-    position: 'absolute',
-    top: 70,
-    right: 0,
-    width: '80%',
-    backgroundColor: Colors.background.medium,
-    borderTopLeftRadius: Layout.radius.lg,
-    borderBottomLeftRadius: Layout.radius.lg,
-    padding: Spacing.lg,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  
-  // Table of Contents
-  tableOfContents: {
-    marginTop: Spacing.lg,
-  },
-  
-  tocTitle: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginBottom: Spacing.sm,
-  },
-  
-  tocItem: {
-    paddingVertical: Spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.divider,
-  },
-  
-  tocItemText: {
-    fontSize: Typography.fontSize.md,
-  },
-  
-  // Version Container
-  versionContainer: {
-    alignItems: 'center',
-    marginTop: Spacing.lg,
-    marginBottom: Spacing['2xl'],
-  },
-  
-  versionText: {
-    color: Colors.text.tertiary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.regular,
-  },
-  
-  // Description Container
-  descriptionContainer: {
-    marginTop: Spacing.xl,
-  },
-  
-  descriptionTitle: {
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginBottom: Spacing.sm,
-  },
-  
-  description: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.secondary,
-    lineHeight: Typography.lineHeight.lg,
-  },
-  
-  // Reader Content
-  readerScrollView: {
-    flex: 1,
-  },
-  
-  readerScrollContent: {
-    paddingHorizontal: Spacing.xl,
-    paddingTop: Spacing['3xl'],
-    paddingBottom: Spacing['4xl'],
-  },
-  
-  chapterTitle: {
-    fontSize: Typography.fontSize.xl,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.text.primary,
-    marginBottom: Spacing.lg,
-  },
-  
-  readerContent: {
-    fontSize: Typography.fontSize.md,
-    lineHeight: Typography.lineHeight.lg,
-    fontFamily: Typography.fontFamily.regular,
-  },
-  
-  // Time Text
-  timeText: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
-  // Rating Text
-  ratingText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary,
-    marginLeft: Spacing.xs / 2,
-  },
-  
-  // Logout Icon
-  logoutIcon: {
-    marginRight: Spacing.sm,
-  },
-  
-  // Media Detail Components
-  contentContainer: {
-    padding: Spacing.md,
-  },
-  
-  metaContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Spacing.sm,
-  },
-  
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: Spacing.md,
-  },
-  
-  actionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Spacing.lg,
-  },
-  
-  playButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Layout.radius.full,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  
-  playButtonText: {
-    color: Colors.background.dark,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginLeft: Spacing.xs,
-  },
-  
-  bookmarkButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: Spacing.md,
-  },
-  
-  episodesContainer: {
-    marginTop: Spacing.xl,
-  },
-  
-  episodeItem: {
-    flexDirection: 'row',
-    marginBottom: Spacing.md,
-    backgroundColor: Colors.background.light,
-    borderRadius: Layout.radius.md,
-    overflow: 'hidden',
-  },
-  
-  episodeThumbnail: {
-    width: 120,
-    height: 68,
-  },
-  
-  episodeInfo: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: Spacing.sm,
-  },
-  
-  episodePlay: {
-    justifyContent: 'center',
-    padding: Spacing.md,
-  },
-  
-  topControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Spacing.md,
-  },
-  
-  backButton: {
-    padding: Spacing.xs,
-  },
-  
-  playerTitle: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.lg,
-    fontFamily: Typography.fontFamily.medium,
-    flex: 1,
-    marginLeft: Spacing.md,
-    marginRight: Spacing.sm,
-  },
-  
-  rightControls: {
-    flexDirection: 'row',
-  },
-  
-  controlButton: {
-    padding: Spacing.xs,
-    marginLeft: Spacing.sm,
-  },
-  
-  centerControls: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  
-  playPauseButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: Spacing.xl,
-  },
-  
-  seekButton: {
-    padding: Spacing.md,
-  },
-  
-  bottomControls: {
-    padding: Spacing.md,
-  },
-  
-  progressContainer: {
-    width: '100%',
-  },
-  
-  progressBackground: {
-    height: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  
-  progressFill: {
-    height: '100%',
-    backgroundColor: Colors.primary,
-    borderRadius: 2,
-  },
-  
-  timeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: Spacing.xs,
-  },
-
-  // Reader Components
-  readerContainer: {
-    flex: 1,
-  },
-
-  readerText: {
-    fontSize: Typography.fontSize.md,
-    lineHeight: Typography.lineHeight.lg,
-    fontFamily: Typography.fontFamily.regular,
-  },
-
-  readerTopControls: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: Spacing.md,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-
-  settingsContainer: {
-    position: 'absolute',
-    top: 70,
-    right: 0,
-    width: '80%',
-    backgroundColor: Colors.background.medium,
-    borderTopLeftRadius: Layout.radius.lg,
-    borderBottomLeftRadius: Layout.radius.lg,
-    padding: Spacing.lg,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-
-  settingButton: {
-    width: 44,
-    height: 44,
-    borderRadius: Layout.radius.md,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-
-  activeSettingButton: {
-    backgroundColor: Colors.primary,
-  },
-
-  settingButtonText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-  },
-
-  activeSettingText: {
-    color: Colors.background.dark,
-  },
-
-  themeButton: {
-    flex: 1,
-    height: 44,
-    borderRadius: Layout.radius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-
-  activeThemeButton: {
-    borderWidth: 2,
-    borderColor: Colors.primary,
-  },
-
-  themeButtonText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-});
+// Component-specific styles using NativeWind class strings
+export const ComponentStyles = {
+   // Media Card
+  mediaCard: 'mr-md mb-md',
+  mediaCardProgress: 'absolute bottom-0 left-0 right-0 h-[3px] bg-background-light',
+   // Settings Item
+  settingsItem: 'flex-row items-center py-md px-md border-b border-b-divider',
+  settingsIconContainer: 'mr-md w-[24px] items-center justify-center',
+  settingsContentContainer: 'flex-1 justify-center',
+  settingsTitle: 'text-md font-medium text-text-primary',
+  settingsSubtitle: 'text-sm font-regular text-text-tertiary mt-[2px]',
+   // Category Tabs
+  categoryTabsContainer: 'py-sm px-md',
+  categoryTab: 'mr-xl py-xs relative',
+  categoryTabText: 'text-md font-medium text-text-secondary',
+  categoryTabActive: 'font-bold text-text-primary',
+  categoryTabIndicator: 'absolute bottom-[-3px] left-0 right-0 h-[1px] bg-primary rounded-[2px] mt-[3px]',
+   // Media Section
+  mediaSectionContainer: 'mb-xl',
+  mediaSectionHeader: 'flex-row justify-between items-center mb-md px-md',
+   // Back Button
+  backButtonContainer: 'p-xs',
+   // Video Player
+  videoContainer: 'flex-1 bg-black',
+  video: 'w-full h-full',
+  controlsOverlay: 'absolute inset-0 bg-black/50 justify-between',
+   // Options Panel
+  optionsPanel: 'absolute right-0 top-[70px] bg-background-medium rounded-md p-md m-md w-[160px]',
+  optionsPanelTitle: 'text-md font-bold text-text-primary mb-sm',
+  optionItem: 'py-sm',
+  optionText: 'text-md text-text-secondary',
+  optionTextActive: 'font-medium text-primary',
+   // Reader Settings
+  readerSettingsContainer: 'absolute top-[70px] right-0 w-[80%] bg-background-medium rounded-tl-lg rounded-bl-lg p-lg shadow-lg',
+   // Table of Contents
+  tableOfContents: 'mt-lg',
+  tocTitle: 'text-md font-bold mb-sm',
+  tocItem: 'py-sm border-b border-b-divider',
+  tocItemText: 'text-md',
+   // Version Container
+  versionContainer: 'items-center mt-lg mb-2xl',
+  versionText: 'text-sm font-regular text-text-tertiary',
+   // Description Container
+  descriptionContainer: 'mt-xl',
+  descriptionTitle: 'text-lg font-bold text-text-primary mb-sm',
+  description: 'text-md font-regular text-text-secondary leading-lg',
+   // Reader Content
+  readerScrollView: 'flex-1',
+  readerScrollContent: 'px-xl pt-3xl pb-4xl',
+  chapterTitle: 'text-xl font-bold text-text-primary mb-lg',
+  readerContent: 'text-md leading-lg font-regular',
+   // Time Text
+  timeText: 'text-sm font-medium text-text-primary',
+   // Rating Text
+  ratingText: 'text-sm font-medium text-primary ml-[2px]',
+   // Logout Icon
+  logoutIcon: 'mr-sm',
+   // Media Detail Components
+  contentContainer: 'p-md',
+  metaContainer: 'flex-row items-center mt-sm',
+  ratingContainer: 'flex-row items-center mr-md',
+   // Action Container
+  actionContainer: 'flex-row items-center mt-lg',
+   // Play Button
+  playButton: 'flex-row items-center bg-primary py-sm px-lg rounded-full flex-1 justify-center',
+   // Play Button Text
+  playButtonText: 'text-md font-bold text-background-dark ml-xs',
+   // Bookmark Button
+  bookmarkButton: 'w-[44px] h-[44px] rounded-[22px] bg-background-light justify-center items-center ml-md',
+   // Episodes List
+  episodesContainer: 'mt-xl',
+};

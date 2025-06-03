@@ -1,199 +1,51 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
-import { Typography } from '../constants/typography';
-import { Spacing } from '../constants/spacing';
-import { Layout } from '../constants/layout';
-
 /**
- * Common button styles used throughout the application
+ * Button className mappings using NativeWind utility classes
  */
-export const ButtonStyles = StyleSheet.create({
+export const ButtonStyles = {
   // Primary Buttons
-  primaryButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Layout.radius.full,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  
-  primaryButtonText: {
-    color: Colors.background.dark,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-  },
-  
+  primaryButton: 'bg-primary py-sm px-lg rounded-full justify-center items-center flex-row',
+  primaryButtonText: 'text-background-dark text-base font-bold',
+
   // Secondary Buttons
-  secondaryButton: {
-    backgroundColor: Colors.background.light,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Layout.radius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  
-  secondaryButtonText: {
-    color: Colors.text.primary,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
+  secondaryButton: 'bg-background-light py-sm px-lg rounded-md justify-center items-center flex-row',
+  secondaryButtonText: 'text-primary text-base font-medium',
+
   // Icon Buttons
-  iconButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  
-  circularButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  
+  iconButton: 'w-[44px] h-[44px] rounded-[22px] bg-background-light justify-center items-center',
+  circularButton: 'w-[64px] h-[64px] rounded-[32px] bg-primary justify-center items-center',
+
   // Control Buttons
-  controlButton: {
-    padding: Spacing.xs,
-    marginLeft: Spacing.sm,
-  },
-  
-  backButton: {
-    padding: Spacing.xs,
-  },
-  
+  controlButton: 'p-xs ml-sm',
+  backButton: 'p-xs',
+
   // Tab Buttons
-  tabContainer: {
-    marginRight: Spacing.xl,
-    paddingVertical: Spacing.xs,
-    position: 'relative',
-  },
-  
+  tabContainer: 'mr-xl py-xs relative',
+
   // Settings Buttons
-  settingButton: {
-    width: 44,
-    height: 44,
-    borderRadius: Layout.radius.md,
-    backgroundColor: Colors.background.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-  
-  activeSettingButton: {
-    backgroundColor: Colors.primary,
-  },
-  
-  settingButtonText: {
-    color: Colors.text.secondary,
-    fontSize: Typography.fontSize.md,
-  },
-  
-  activeSettingText: {
-    color: Colors.background.dark,
-  },
-  
+  settingButton: 'w-[44px] h-[44px] rounded-md bg-background-light justify-center items-center mr-sm',
+  activeSettingButton: 'bg-primary',
+  settingButtonText: 'text-secondary text-base',
+  activeSettingText: 'text-background-dark',
+
   // Theme Buttons
-  themeButton: {
-    flex: 1,
-    height: 44,
-    borderRadius: Layout.radius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-  
-  activeThemeButton: {
-    borderWidth: 2,
-    borderColor: Colors.primary,
-  },
-  
-  themeButtonText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
+  themeButton: 'flex-1 h-[44px] rounded-md justify-center items-center mr-sm',
+  activeThemeButton: 'border-2 border-primary',
+  themeButtonText: 'text-sm font-medium',
+
   // Play Buttons
-  playButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Layout.radius.full,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  
-  playPauseButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: Spacing.xl,
-  },
-  
-  seekButton: {
-    padding: Spacing.md,
-  },
-  
+  playButton: 'flex-row items-center bg-primary py-sm px-lg rounded-full flex-1 justify-center',
+  playPauseButton: 'w-[64px] h-[64px] rounded-[32px] bg-primary justify-center items-center mx-xl',
+  seekButton: 'p-md',
+
   // Logout Button
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    borderColor: Colors.error,
-    borderWidth: 1,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Layout.radius.md,
-    marginTop: Spacing.lg,
-  },
-  
-  logoutText: {
-    color: Colors.error,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  
+  logoutButton: 'flex-row items-center bg-[rgba(239,68,68,0.1)] border border-error py-sm px-lg rounded-md mt-lg',
+  logoutText: 'text-error text-base font-medium',
+
   // Home Button (for 404 page)
-  homeButton: {
-    flexDirection: 'row',
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.xl,
-    borderRadius: Layout.radius.full,
-    alignItems: 'center',
-    marginTop: Spacing['2xl'],
-  },
-  
-  homeButtonText: {
-    color: Colors.background.dark,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.bold,
-    marginLeft: Spacing.xs,
-  },
-  
+  homeButton: 'flex-row bg-primary py-sm px-xl rounded-full items-center mt-2xl',
+  homeButtonText: 'text-background-dark text-base font-bold ml-xs',
+
   // View All Button
-  viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  
-  viewAllText: {
-    color: Colors.primary,
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.medium,
-  },
-});
+  viewAllButton: 'flex-row items-center',
+  viewAllText: 'text-primary text-sm font-medium',
+};

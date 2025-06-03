@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Pressable, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams } from 'expo-router';
 import { Book, Bookmark, BookmarkCheck } from 'lucide-react-native';
-import { GlobalStyles, ComponentStyles, LayoutStyles } from '@/styles';
+import { GlobalStyles, ComponentStyles, LayoutStyles, ButtonStyles, TextStyles, readerThemes } from '@/styles';
 import { Colors } from '@/constants/colors';
 import { Typography } from '@/constants/typography';
 import { api } from '@/utils/api';
@@ -19,41 +19,42 @@ type ReaderSettings = {
 
 export default function ReaderScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  
+   
   const [media, setMedia] = useState<Novel | Manga | null>(null);
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [loading, setLoading] = useState(true);
-  
+   
   const [settings, setSettings] = useState<ReaderSettings>({
     fontSize: Typography.fontSize.md,
     lineHeight: Typography.lineHeight.lg,
     fontFamily: Typography.fontFamily.regular,
     theme: 'dark',
   });
-  
+  const themeClasses = readerThemes[settings.theme];
+   
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
-      
+
       try {
         setLoading(true);
         const mediaData = await api.getMediaById(id);
         if (mediaData && (mediaData.type === 'novel' || mediaData.type === 'manga')) {
           const typedMedia = mediaData as Novel | Manga;
           setMedia(typedMedia);
-          
+
           if (typedMedia.chapters && typedMedia.chapters.length > 0) {
             setChapter(typedMedia.chapters[0]);
           }
         }
-        
+
         // Check if bookmarked
         const bookmarks = await api.getBookmarks();
         setIsBookmarked(bookmarks.some(b => b.mediaId === id));
-        
+
         // Add to history
         if (mediaData) {
           api.addToHistory({
@@ -70,13 +71,13 @@ export default function ReaderScreen() {
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, [id]);
-  
+
   const toggleBookmark = async () => {
     if (!media) return;
-    
+
     if (isBookmarked) {
       const bookmarks = await api.getBookmarks();
       const bookmark = bookmarks.find(b => b.mediaId === media.id);
@@ -91,10 +92,10 @@ export default function ReaderScreen() {
         coverImage: media.coverImage
       });
     }
-    
+
     setIsBookmarked(!isBookmarked);
   };
-  
+
   const getBackgroundColor = () => {
     switch (settings.theme) {
       case 'light':
@@ -106,7 +107,7 @@ export default function ReaderScreen() {
         return Colors.background.dark;
     }
   };
-  
+
   const getTextColor = () => {
     switch (settings.theme) {
       case 'light':
@@ -118,56 +119,50 @@ export default function ReaderScreen() {
         return Colors.text.primary;
     }
   };
-  
+
   const toggleControls = () => {
     setShowControls(!showControls);
     if (showSettings) setShowSettings(false);
   };
-  
+
   if (loading || !media || !chapter) {
     return (
-      <SafeAreaView style={[GlobalStyles.loadingContainer, { backgroundColor: getBackgroundColor() }]}>
-        <Text style={[GlobalStyles.loadingText, { color: getTextColor() }]}>Loading...</Text>
+      <SafeAreaView className={`${GlobalStyles.loadingContainer} ${themeClasses.backgroundClass}`}> 
+        <Text className={`${GlobalStyles.loadingText} ${themeClasses.textClass}`}>Loading...</Text>
       </SafeAreaView>
     );
   }
-  
+
   return (
-    <View style={[ComponentStyles.readerContainer, { backgroundColor: getBackgroundColor() }]}>
+    <View className={`flex-1 ${themeClasses.backgroundClass}`}>  
       <StatusBar style={settings.theme === 'dark' ? 'light' : 'dark'} />
-      
-      <Pressable
-        style={{ flex: 1 }}
-        onPress={toggleControls}
-      >
+
+      <Pressable className="flex-1" onPress={toggleControls}>
         <ScrollView 
-          style={ComponentStyles.readerScrollView}
-          contentContainerStyle={ComponentStyles.readerScrollContent}
+          className={ComponentStyles.readerScrollView}
+          contentContainerClassName={ComponentStyles.readerScrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={ComponentStyles.chapterTitle}>{chapter.title}</Text>
+          <Text className={`${ComponentStyles.chapterTitle} ${themeClasses.textClass}`}>{chapter.title}</Text>
           <Text 
-            style={[
-              ComponentStyles.readerText, 
-              { 
-                color: getTextColor(),
-                fontSize: settings.fontSize,
-                lineHeight: settings.lineHeight,
-                fontFamily: settings.fontFamily,
-              }
-            ]}
+            className={`${ComponentStyles.readerContent} ${themeClasses.textClass}`}
+            style={{
+              fontSize: settings.fontSize,
+              lineHeight: settings.lineHeight,
+              fontFamily: settings.fontFamily,
+            }}
           >
             {chapter.content}
           </Text>
         </ScrollView>
       </Pressable>
-      
+
       {showControls && (
         <>
-          <SafeAreaView style={ComponentStyles.readerTopControls}>
+          <SafeAreaView className={LayoutStyles.topControls}>
             <BackButton color={getTextColor()} />
-            <View style={ComponentStyles.rightControls}>
-              <Pressable onPress={toggleBookmark} style={ComponentStyles.controlButton}>
+            <View className={LayoutStyles.rightControls}>
+              <Pressable onPress={toggleBookmark} className={ButtonStyles.controlButton}>
                 {isBookmarked ? (
                   <BookmarkCheck color={Colors.primary} size={24} fill={Colors.primary} />
                 ) : (
@@ -176,116 +171,86 @@ export default function ReaderScreen() {
               </Pressable>
               <Pressable 
                 onPress={() => setShowSettings(!showSettings)} 
-                style={ComponentStyles.controlButton}
+                className={ButtonStyles.controlButton}
               >
                 <Book color={showSettings ? Colors.primary : getTextColor()} size={24} />
               </Pressable>
             </View>
           </SafeAreaView>
-          
+
           {showSettings && (
-            <SafeAreaView style={ComponentStyles.settingsContainer}>
-              <Text style={[ComponentStyles.settingsTitle, { color: getTextColor() }]}>Font</Text>
-              <View style={LayoutStyles.settingsRow}>
+            <SafeAreaView className={ComponentStyles.readerSettingsContainer}>
+              <Text className={ComponentStyles.settingsTitle} style={{ color: getTextColor() }}>Font</Text>
+              <View className={LayoutStyles.settingsRow}>
                 <Pressable 
-                  style={[
-                    ComponentStyles.settingButton, 
-                    settings.fontSize === Typography.fontSize.sm && ComponentStyles.activeSettingButton
-                  ]}
+                  className={`${ButtonStyles.settingButton} ${settings.fontSize === Typography.fontSize.sm ? ButtonStyles.activeSettingButton : ''}`}
                   onPress={() => setSettings({ ...settings, fontSize: Typography.fontSize.sm })}
                 >
-                  <Text style={[
-                    ComponentStyles.settingButtonText,
-                    settings.fontSize === Typography.fontSize.sm && ComponentStyles.activeSettingText
-                  ]}>A</Text>
+                  <Text 
+                    className={ButtonStyles.settingButtonText}
+                    style={settings.fontSize === Typography.fontSize.sm ? { color: Colors.primary } : undefined}
+                  >A</Text>
                 </Pressable>
                 <Pressable 
-                  style={[
-                    ComponentStyles.settingButton, 
-                    settings.fontSize === Typography.fontSize.md && ComponentStyles.activeSettingButton
-                  ]}
+                  className={`${ButtonStyles.settingButton} ${settings.fontSize === Typography.fontSize.md ? ButtonStyles.activeSettingButton : ''}`}
                   onPress={() => setSettings({ ...settings, fontSize: Typography.fontSize.md })}
                 >
-                  <Text style={[
-                    ComponentStyles.settingButtonText,
-                    { fontSize: Typography.fontSize.md },
-                    settings.fontSize === Typography.fontSize.md && ComponentStyles.activeSettingText
-                  ]}>A</Text>
+                  <Text 
+                    className={ButtonStyles.settingButtonText}
+                    style={settings.fontSize === Typography.fontSize.md ? { color: Colors.primary } : undefined}
+                  >A</Text>
                 </Pressable>
                 <Pressable 
-                  style={[
-                    ComponentStyles.settingButton, 
-                    settings.fontSize === Typography.fontSize.lg && ComponentStyles.activeSettingButton
-                  ]}
+                  className={`${ButtonStyles.settingButton} ${settings.fontSize === Typography.fontSize.lg ? ButtonStyles.activeSettingButton : ''}`}
                   onPress={() => setSettings({ ...settings, fontSize: Typography.fontSize.lg })}
                 >
-                  <Text style={[
-                    ComponentStyles.settingButtonText,
-                    { fontSize: Typography.fontSize.lg },
-                    settings.fontSize === Typography.fontSize.lg && ComponentStyles.activeSettingText
-                  ]}>A</Text>
+                  <Text 
+                    className={ButtonStyles.settingButtonText}
+                    style={settings.fontSize === Typography.fontSize.lg ? { color: Colors.primary } : undefined}
+                  >A</Text>
                 </Pressable>
               </View>
-              
-              <Text style={[ComponentStyles.settingsTitle, { color: getTextColor() }]}>Theme</Text>
-              <View style={LayoutStyles.settingsRow}>
+
+              <Text className={ComponentStyles.settingsTitle} style={{ color: getTextColor() }}>Theme</Text>
+              <View className={LayoutStyles.settingsRow}>
                 <Pressable 
-                  style={[
-                    ComponentStyles.themeButton,
-                    { backgroundColor: '#ffffff' },
-                    settings.theme === 'light' && ComponentStyles.activeThemeButton
-                  ]}
+                  className={`${ButtonStyles.themeButton}${settings.theme === 'light' ? ` ${ButtonStyles.activeThemeButton}` : ''}`}
                   onPress={() => setSettings({ ...settings, theme: 'light' })}
                 >
-                  <Text style={[
-                    ComponentStyles.themeButtonText,
-                    { color: '#333333' },
-                  ]}>Light</Text>
+                  <Text className={ButtonStyles.themeButtonText} style={{ color: '#333333' }}>Light</Text>
                 </Pressable>
                 <Pressable 
-                  style={[
-                    ComponentStyles.themeButton,
-                    { backgroundColor: '#f8f1e3' },
-                    settings.theme === 'sepia' && ComponentStyles.activeThemeButton
-                  ]}
+                  className={`${ButtonStyles.themeButton}${settings.theme === 'sepia' ? ` ${ButtonStyles.activeThemeButton}` : ''}`}
                   onPress={() => setSettings({ ...settings, theme: 'sepia' })}
                 >
-                  <Text style={[
-                    ComponentStyles.themeButtonText,
-                    { color: '#5b4636' },
-                  ]}>Sepia</Text>
+                  <Text className={ButtonStyles.themeButtonText} style={{ color: '#5b4636' }}>Sepia</Text>
                 </Pressable>
                 <Pressable 
-                  style={[
-                    ComponentStyles.themeButton,
-                    { backgroundColor: Colors.background.dark },
-                    settings.theme === 'dark' && ComponentStyles.activeThemeButton
-                  ]}
+                  className={`${ButtonStyles.themeButton}${settings.theme === 'dark' ? ` ${ButtonStyles.activeThemeButton}` : ''}`}
                   onPress={() => setSettings({ ...settings, theme: 'dark' })}
                 >
-                  <Text style={[
-                    ComponentStyles.themeButtonText,
-                    { color: Colors.text.primary },
-                  ]}>Dark</Text>
+                  <Text className={ButtonStyles.themeButtonText} style={{ color: Colors.text.primary }}>Dark</Text>
                 </Pressable>
               </View>
-              
-              <View style={ComponentStyles.tableOfContents}>
-                <Text style={[ComponentStyles.tocTitle, { color: getTextColor() }]}>Table of Contents</Text>
-                <Pressable style={ComponentStyles.tocItem}>
-                  <Text style={[
-                    ComponentStyles.tocItemText, 
-                    { color: getTextColor() },
-                    chapter.number === 1 && { color: Colors.primary, fontFamily: Typography.fontFamily.medium }
-                  ]}>
+
+              <View className={ComponentStyles.tableOfContents}>
+                <Text className={ComponentStyles.tocTitle} style={{ color: getTextColor() }}>Table of Contents</Text>
+                <Pressable className={ComponentStyles.tocItem}>
+                  <Text
+                    className={ComponentStyles.tocItemText}
+                    style={{
+                      color: chapter.number === 1 ? Colors.primary : getTextColor(),
+                      fontFamily: chapter.number === 1 ? Typography.fontFamily.medium : undefined,
+                    }}
+                  >
                     Chapter 1
                   </Text>
                 </Pressable>
-                <Pressable style={ComponentStyles.tocItem}>
-                  <Text style={[ComponentStyles.tocItemText, { color: getTextColor() }]}>Chapter 2</Text>
+                <Pressable className={ComponentStyles.tocItem}>
+                  <Text className={ComponentStyles.tocItemText} style={{ color: getTextColor() }}>Chapter 2</Text>
                 </Pressable>
-                <Pressable style={ComponentStyles.tocItem}>
-                  <Text style={[ComponentStyles.tocItemText, { color: getTextColor() }]}>Chapter 3</Text>
+                <Pressable className={ComponentStyles.tocItem}>
+                  <Text className={ComponentStyles.tocItemText} style={{ color: getTextColor() }}>Chapter 3</Text>
                 </Pressable>
               </View>
             </SafeAreaView>
@@ -293,5 +258,5 @@ export default function ReaderScreen() {
         </>
       )}
     </View>
-  );
-}
+   );
+ }

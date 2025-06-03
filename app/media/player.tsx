@@ -12,7 +12,7 @@ import {
   SkipForward,
   X
 } from 'lucide-react-native';
-import { GlobalStyles, ComponentStyles } from '@/styles';
+import { GlobalStyles, ComponentStyles, ButtonStyles, LayoutStyles, TextStyles } from '@/styles';
 import { Colors } from '@/constants/colors';
 
 export default function PlayerScreen() {
@@ -92,16 +92,16 @@ export default function PlayerScreen() {
   };
   
   return (
-    <View style={GlobalStyles.videoPlayerContainer}>
+    <View className={GlobalStyles.videoPlayerContainer}>
       <StatusBar hidden />
       
       <Pressable
-        style={ComponentStyles.videoContainer}
+        className={ComponentStyles.videoContainer}
         onPress={() => setControlsVisible(!controlsVisible)}
       >
         <Video
           ref={videoRef}
-          style={ComponentStyles.video}
+          className={ComponentStyles.video}
           source={{ uri: params.videoUrl || 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
           useNativeControls={false}
           resizeMode={ResizeMode.CONTAIN}
@@ -111,23 +111,23 @@ export default function PlayerScreen() {
       </Pressable>
       
       {controlsVisible && (
-        <SafeAreaView style={ComponentStyles.controlsOverlay}>
-          <View style={ComponentStyles.topControls}>
-            <Pressable onPress={() => router.back()} style={ComponentStyles.backButton}>
+        <SafeAreaView className={ComponentStyles.controlsOverlay}>
+          <View className={LayoutStyles.topControls}>
+            <Pressable onPress={() => router.back()} className={ButtonStyles.backButton}>
               <X color={Colors.text.primary} size={24} />
             </Pressable>
-            <Text style={ComponentStyles.playerTitle} numberOfLines={1}>
+            <Text className={`${TextStyles.primaryText} flex-1`} numberOfLines={1}>
               {params.title || 'Video Player'}
             </Text>
-            <View style={ComponentStyles.rightControls}>
-              <Pressable style={ComponentStyles.controlButton} onPress={toggleSubtitles}>
+            <View className={LayoutStyles.rightControls}>
+              <Pressable className={ButtonStyles.controlButton} onPress={toggleSubtitles}>
                 <Subtitles 
                   color={showSubtitles ? Colors.primary : Colors.text.primary} 
                   size={24} 
                   fill={showSubtitles ? Colors.primary : undefined}
                 />
               </Pressable>
-              <Pressable style={ComponentStyles.controlButton} onPress={toggleQualityOptions}>
+              <Pressable className={ButtonStyles.controlButton} onPress={toggleQualityOptions}>
                 <Settings 
                   color={showQualityOptions ? Colors.primary : Colors.text.primary} 
                   size={24} 
@@ -136,32 +136,32 @@ export default function PlayerScreen() {
             </View>
           </View>
           
-          <View style={ComponentStyles.centerControls}>
-            <Pressable style={ComponentStyles.seekButton} onPress={() => seek(-10000)}>
+          <View className={LayoutStyles.centerControls}>
+            <Pressable className={ButtonStyles.seekButton} onPress={() => seek(-10000)}>
               <SkipBack color={Colors.text.primary} size={32} />
             </Pressable>
-            <Pressable style={ComponentStyles.playPauseButton} onPress={togglePlayPause}>
+            <Pressable className={ButtonStyles.playPauseButton} onPress={togglePlayPause}>
               {isPlaying ? (
                 <Pause color={Colors.background.dark} size={28} />
               ) : (
                 <Play color={Colors.background.dark} size={28} />
               )}
             </Pressable>
-            <Pressable style={ComponentStyles.seekButton} onPress={() => seek(10000)}>
+            <Pressable className={ButtonStyles.seekButton} onPress={() => seek(10000)}>
               <SkipForward color={Colors.text.primary} size={32} />
             </Pressable>
           </View>
           
-          <View style={ComponentStyles.bottomControls}>
-            <View style={ComponentStyles.progressContainer}>
-              <View style={ComponentStyles.progressBackground}>
-                <View style={[ComponentStyles.progressFill, { width: `${progress * 100}%` }]} />
+          <View className={LayoutStyles.bottomControls}>
+            <View className={LayoutStyles.progressContainer}>
+              <View className={LayoutStyles.progressBackground}>
+                <View className={LayoutStyles.progressFill} style={{ width: `${progress * 100}%` }} />
               </View>
-              <View style={ComponentStyles.timeContainer}>
-                <Text style={ComponentStyles.timeText}>
+              <View className={LayoutStyles.timeContainer}>
+                <Text className={ComponentStyles.timeText}>
                   {formatTime(position)}
                 </Text>
-                <Text style={ComponentStyles.timeText}>
+                <Text className={ComponentStyles.timeText}>
                   {formatTime(duration || 0)}
                 </Text>
               </View>
@@ -171,37 +171,37 @@ export default function PlayerScreen() {
       )}
       
       {showSubtitles && controlsVisible && (
-        <View style={ComponentStyles.optionsPanel}>
-          <Text style={ComponentStyles.optionsPanelTitle}>Subtitles</Text>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={[ComponentStyles.optionText, ComponentStyles.optionTextActive]}>English</Text>
+        <View className={ComponentStyles.optionsPanel}>
+          <Text className={ComponentStyles.optionsPanelTitle}>Subtitles</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={`${ComponentStyles.optionText} ${ComponentStyles.optionTextActive}`}>English</Text>
           </Pressable>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={ComponentStyles.optionText}>Spanish</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={ComponentStyles.optionText}>Spanish</Text>
           </Pressable>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={ComponentStyles.optionText}>French</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={ComponentStyles.optionText}>French</Text>
           </Pressable>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={ComponentStyles.optionText}>Off</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={ComponentStyles.optionText}>Off</Text>
           </Pressable>
         </View>
       )}
       
       {showQualityOptions && controlsVisible && (
-        <View style={ComponentStyles.optionsPanel}>
-          <Text style={ComponentStyles.optionsPanelTitle}>Quality</Text>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={[ComponentStyles.optionText, ComponentStyles.optionTextActive]}>Auto</Text>
+        <View className={ComponentStyles.optionsPanel}>
+          <Text className={ComponentStyles.optionsPanelTitle}>Quality</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={`${ComponentStyles.optionText} ${ComponentStyles.optionTextActive}`}>Auto</Text>
           </Pressable>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={ComponentStyles.optionText}>1080p</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={ComponentStyles.optionText}>1080p</Text>
           </Pressable>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={ComponentStyles.optionText}>720p</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={ComponentStyles.optionText}>720p</Text>
           </Pressable>
-          <Pressable style={ComponentStyles.optionItem}>
-            <Text style={ComponentStyles.optionText}>480p</Text>
+          <Pressable className={ComponentStyles.optionItem}>
+            <Text className={ComponentStyles.optionText}>480p</Text>
           </Pressable>
         </View>
       )}

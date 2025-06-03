@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { ArrowRight } from 'lucide-react-native';
 import { Colors } from '../../constants/colors';
 import { Spacing } from '../../constants/spacing';
-import { ComponentStyles, ButtonStyles, TextStyles, LayoutStyles } from '../../styles';
+import { ButtonStyles , LayoutStyles} from '../../styles';
 import { Media } from '../../types/media';
 import MediaCard from './MediaCard';
 
@@ -36,15 +36,15 @@ const MediaSection: React.FC<MediaSectionProps> = ({
   }
 
   return (
-    <View style={ComponentStyles.mediaSectionContainer}>
-      <View style={ComponentStyles.mediaSectionHeader}>
-        <Text style={TextStyles.subtitle}>{title}</Text>
+    <View className="mb-lg">
+      <View className="flex-row justify-between items-center mb-md">
+        <Text className="text-lg font-bold text-primary">{title}</Text>
         {showViewAll && viewAllRoute && (
           <Pressable 
-            style={ButtonStyles.viewAllButton}
+            className="flex-row items-center"
             onPress={() => router.push(viewAllRoute as any)}
           >
-            <Text style={ButtonStyles.viewAllText}>View All</Text>
+            <Text className={ButtonStyles.viewAllText}>View All</Text>
             <ArrowRight size={16} color={Colors.primary} style={{ marginLeft: Spacing.xs }} />
           </Pressable>
         )}
@@ -55,7 +55,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={LayoutStyles.listContainer}
+          contentContainerClassName={LayoutStyles.listContainer}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <MediaCard 
@@ -71,8 +71,8 @@ const MediaSection: React.FC<MediaSectionProps> = ({
           data={data}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={LayoutStyles.gridContainer}
-          columnWrapperStyle={LayoutStyles.columnWrapper}
+          contentContainerClassName={LayoutStyles.gridContainer}
+          columnWrapperClassName={LayoutStyles.columnWrapper}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <MediaCard 

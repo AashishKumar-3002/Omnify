@@ -1,140 +1,45 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
-import { Typography } from '../constants/typography';
-import { Spacing } from '../constants/spacing';
-import { Layout } from '../constants/layout';
-
-/**
- * Form and input-related styles
- */
-export const FormStyles = StyleSheet.create({
+// Form and input-related styles using NativeWind classes
+export const FormStyles = {
   // Form Containers
-  formContainer: {
-    padding: Spacing.md,
-  },
+  formContainer: 'p-md',
   
-  formGroup: {
-    marginBottom: Spacing.lg,
-  },
+  formGroup: 'mb-lg',
   
   // Input Fields
-  input: {
-    backgroundColor: Colors.background.light,
-    borderRadius: Layout.radius.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.primary,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.divider,
-  },
+  input: 'bg-background-light rounded-md px-md py-sm text-md font-regular text-text-primary border border-divider',
   
-  inputFocused: {
-    borderColor: Colors.primary,
-    borderWidth: 2,
-  },
+  inputFocused: 'border-primary border-2',
   
-  inputError: {
-    borderColor: Colors.error,
-    borderWidth: 2,
-  },
+  inputError: 'border-error border-2',
   
   // Labels
-  label: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.text.primary,
-    marginBottom: Spacing.xs,
-  },
+  label: 'text-md font-medium text-text-primary mb-xs',
   
-  requiredLabel: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.text.primary,
-    marginBottom: Spacing.xs,
-  },
+  requiredLabel: 'text-md font-medium text-text-primary mb-xs',
   
   // Helper Text
-  helperText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.secondary,
-    marginTop: Spacing.xs,
-  },
+  helperText: 'text-sm font-regular text-text-secondary mt-xs',
   
-  errorHelperText: {
-    fontSize: Typography.fontSize.sm,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.error,
-    marginTop: Spacing.xs,
-  },
+  errorHelperText: 'text-sm font-regular text-error mt-xs',
   
   // Checkboxes and Radio Buttons
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: Spacing.sm,
-  },
+  checkboxContainer: 'flex-row items-center mb-sm',
   
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: Layout.radius.sm,
-    borderWidth: 2,
-    borderColor: Colors.divider,
-    backgroundColor: Colors.background.light,
-    marginRight: Spacing.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  checkbox: 'w-[20px] h-[20px] rounded-sm border-2 border-divider bg-background-light mr-sm justify-center items-center',
   
-  checkboxChecked: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
+  checkboxChecked: 'bg-primary border-primary',
   
-  checkboxLabel: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.primary,
-    flex: 1,
-  },
+  checkboxLabel: 'text-md font-regular text-text-primary flex-1',
   
   // Switch
-  switchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: Spacing.sm,
-  },
+  switchContainer: 'flex-row justify-between items-center py-sm',
   
-  switchLabel: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.text.primary,
-    flex: 1,
-  },
+  switchLabel: 'text-md font-medium text-text-primary flex-1',
   
   // Picker/Select
-  picker: {
-    backgroundColor: Colors.background.light,
-    borderRadius: Layout.radius.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.divider,
-  },
+  picker: 'bg-background-light rounded-md px-md py-sm border border-divider',
   
-  pickerText: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.primary,
-  },
+  pickerText: 'text-md font-regular text-text-primary',
   
-  pickerPlaceholder: {
-    fontSize: Typography.fontSize.md,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.text.secondary,
-  },
-});
+  pickerPlaceholder: 'text-md font-regular text-text-secondary',
+};

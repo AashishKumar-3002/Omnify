@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Colors } from '../../constants/colors';
-import { ComponentStyles } from '../../styles';
 import { ChevronRight } from 'lucide-react-native';
 
 interface SettingsItemProps {
@@ -21,16 +20,16 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
 }) => {
   return (
     <Pressable 
-      style={ComponentStyles.settingsItem}
+      className="flex-row items-center py-md px-md border-b border-b-divider"
       onPress={onPress}
       disabled={!onPress}
     >
-      <View style={ComponentStyles.settingsIconContainer}>
+      <View className="mr-md w-[24px] items-center justify-center">
         {icon}
       </View>
-      <View style={ComponentStyles.settingsContentContainer}>
-        <Text style={ComponentStyles.settingsTitle}>{title}</Text>
-        {subtitle && <Text style={ComponentStyles.settingsSubtitle}>{subtitle}</Text>}
+      <View className="flex-1 justify-center">
+        <Text className="text-md font-medium text-text-primary">{title}</Text>
+        {subtitle && <Text className="text-sm font-regular text-text-tertiary mt-[2px]">{subtitle}</Text>}
       </View>
       {showChevron && (
         <ChevronRight size={20} color={Colors.text.tertiary} />

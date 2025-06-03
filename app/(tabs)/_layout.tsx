@@ -1,18 +1,32 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Colors } from '@/constants/colors';
-import { LayoutStyles, TextStyles } from '@/styles';
 import { Home, LibraryBig, Download, User } from 'lucide-react-native';
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: '#121212', // background-dark
+    borderTopColor: '#333333', // divider
+    borderTopWidth: 1,
+    height: 60,
+    paddingBottom: 6,
+  },
+  tabBarLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#b3b3b3', // text-secondary
+  },
+});
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: LayoutStyles.tabBar,
-        tabBarActiveTintColor: Colors.iconActive,
-        tabBarInactiveTintColor: Colors.icon,
-        tabBarLabelStyle: TextStyles.tabLabel,
+        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: '#f4c427', // primary
+        tabBarInactiveTintColor: '#b3b3b3', // secondary
+        tabBarLabelStyle: styles.tabBarLabel,
       }}
     >
       <Tabs.Screen

@@ -4,18 +4,17 @@ import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { GlobalStyles } from '@/styles';
-import { Colors } from '@/constants/colors';
+import '../global.css';
 
 export default function RootLayout() {
   useFrameworkReady();
 
   return (
-    <GestureHandlerRootView style={GlobalStyles.container}>
+    <GestureHandlerRootView className={GlobalStyles.safeArea}>
       <StatusBar style="light" />
       <Stack 
         screenOptions={{ 
           headerShown: false,
-          contentStyle: { backgroundColor: Colors.background.dark },
           animation: 'slide_from_right',
         }}
       >
