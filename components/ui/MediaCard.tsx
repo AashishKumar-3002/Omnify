@@ -38,31 +38,33 @@ const MediaCard: React.FC<MediaCardProps> = ({
   const getCardDimensions = () => {
     switch (size) {
       case 'small':
-        return { width: 120, height: 180 };
+        return { width: 110, height: 165 };
       case 'large':
-        return { width: 180, height: 270 };
+        return { width: 170, height: 255 };
       case 'medium':
       default:
-        return { width: 150, height: 225 };
+        return { width: 130, height: 195 };
     }
   };
 
   const dimensions = getCardDimensions();
+  const imageUri = item.coverImage && item.coverImage.length > 0 ? item.coverImage : 'https://placehold.co/300x450/222/fff?text=No+Image';
 
   return (
     <Pressable
-      className="rounded-lg overflow-hidden bg-background-light shadow-md"
+      className="rounded-lg overflow-hidden bg-background-light"
       style={{ width: dimensions.width, height: dimensions.height }}
       onPress={handlePress}
     >
       <Image
-        source={{ uri: item.coverImage || 'https://via.placeholder.com/150' }}
-        className="w-full h-3/4"
+        source={{ uri: imageUri }}
+        className="w-full"
+        style={{ height: dimensions.height * 0.75, backgroundColor: '#222' }}
         resizeMode="cover"
       />
       {showTitle && (
-        <View className="p-sm">
-          <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>{item.title}</Text>
+        <View className="px-2 py-1">
+          <Text className="text-xs font-semibold text-text-primary" numberOfLines={1}>{item.title}</Text>
         </View>
       )}
       {showProgress && (

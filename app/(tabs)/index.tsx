@@ -3,6 +3,7 @@ import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import CategoryTabs from '@/components/ui/CategoryTabs';
 import MediaSection from '@/components/ui/MediaSection';
+import { api } from '@/utils/api';
 import { Media } from '@/types/media';
 
 const categories = ['Movies', 'Series', 'Anime', 'Manga/Manhwa'];
@@ -15,17 +16,16 @@ export default function HomeScreen() {
   const [manga, setManga] = useState<Media[]>([]);
 
   useEffect(() => {
-    // Mock data fetching
-    setMovies([{ id: '1', title: 'Movie 1', type: 'movie', coverImage: '', description: '' }, { id: '2', title: 'Movie 2', type: 'movie', coverImage: '', description: '' }]);
-    setSeries([{ id: '3', title: 'Series 1', type: 'series', coverImage: '', description: '' }, { id: '4', title: 'Series 2', type: 'series', coverImage: '', description: '' }]);
-    setAnime([{ id: '5', title: 'Anime 1', type: 'anime', coverImage: '', description: '' }, { id: '6', title: 'Anime 2', type: 'anime', coverImage: '', description: '' }]);
-    setManga([{ id: '7', title: 'Manga 1', type: 'manga', coverImage: '', description: '' }, { id: '8', title: 'Manga 2', type: 'manga', coverImage: '', description: '' }]);
+    api.getMovies().then(setMovies);
+    api.getSeries().then(setSeries);
+    api.getAnime().then(setAnime);
+    api.getManga().then(setManga);
   }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-background-dark">
       <StatusBar style="light" />
-      <View className="px-md pt-xl pb-sm">
+      <View className="px-4 pt-8 pb-2">
         <Text className="text-2xl font-bold text-primary">Entertainment Hub</Text>
       </View>
       <CategoryTabs 
@@ -33,7 +33,7 @@ export default function HomeScreen() {
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
       />
-      <ScrollView className="flex-1 px-md" showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 px-2" showsVerticalScrollIndicator={false}>
         <MediaSection title="Featured Movies" data={movies} />
         <MediaSection title="Popular Series" data={series} />
         <MediaSection title="Trending Anime" data={anime} />

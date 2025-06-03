@@ -2,9 +2,6 @@ import React from 'react';
 import { View, Text, FlatList, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowRight } from 'lucide-react-native';
-import { Colors } from '../../constants/colors';
-import { Spacing } from '../../constants/spacing';
-import { ButtonStyles , LayoutStyles} from '../../styles';
 import { Media } from '../../types/media';
 import MediaCard from './MediaCard';
 
@@ -36,54 +33,34 @@ const MediaSection: React.FC<MediaSectionProps> = ({
   }
 
   return (
-    <View className="mb-lg">
-      <View className="flex-row justify-between items-center mb-md">
+    <View className="mb-6">
+      <View className="flex-row justify-between items-center mb-3 px-2">
         <Text className="text-lg font-bold text-primary">{title}</Text>
         {showViewAll && viewAllRoute && (
           <Pressable 
             className="flex-row items-center"
             onPress={() => router.push(viewAllRoute as any)}
           >
-            <Text className={ButtonStyles.viewAllText}>View All</Text>
-            <ArrowRight size={16} color={Colors.primary} style={{ marginLeft: Spacing.xs }} />
+            <Text className="text-sm font-semibold text-primary">View All</Text>
+            <ArrowRight size={16} color="#f4c427" className="ml-1" />
           </Pressable>
         )}
       </View>
-      
-      {horizontal ? (
-        <FlatList
-          data={data}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerClassName={LayoutStyles.listContainer}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <MediaCard 
-              item={item}
-              size={cardSize}
-              showProgress={showProgress}
-              progress={progressData[item.id] || 0}
-            />
-          )}
-        />
-      ) : (
-        <FlatList
-          data={data}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          contentContainerClassName={LayoutStyles.gridContainer}
-          columnWrapperClassName={LayoutStyles.columnWrapper}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <MediaCard 
-              item={item}
-              size={cardSize}
-              showProgress={showProgress}
-              progress={progressData[item.id] || 0}
-            />
-          )}
-        />
-      )}
+      <FlatList
+        data={data}
+        horizontal={horizontal}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ gap: 16, paddingHorizontal: 8 }}
+        renderItem={({ item }) => (
+          <MediaCard 
+            item={item}
+            size={cardSize}
+            showProgress={showProgress}
+            progress={progressData[item.id] || 0}
+          />
+        )}
+      />
     </View>
   );
 };
